@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ album_name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ album_name }}</h1>
+
+    <ul>
+    {% for pic_url in pic_urls %}
+        <div><img src="{% static pic_url %}" width="800" /></div>
+    {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Title hello{% endblock %}
+
+{% block content %}
+    <h1>Some content</h1>
+
+    <ul>
+    {% for subdir in subdirs %}
+        <li><a href="albums/{{ subdir }}/">{{ subdir }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

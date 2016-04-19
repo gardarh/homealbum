@@ -1,0 +1,10 @@
+{% extends "frame.html" %}
+{% load staticfiles %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'mopho/style.css' %}" />
+{% endblock %}
+{% block body %}
+    <div id="content">
+    {% block content %}{% endblock %}
+    </div>
+{% endblock %}
