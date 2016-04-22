@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ album_name }}: {{ photo_name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ album_name }}: {{ photo_name }}</h1>
+    <div>
+        <a href="{{ prev_url }}">prev</a> - <a href="{{ up_url }}">up</a> - <a href="{{ next_url }}">next</a>
+    </div>
+
+    <div class="img"><img src="{% static photo_url %}"  /></div>
+{% endblock %}

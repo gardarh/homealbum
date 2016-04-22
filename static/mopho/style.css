@@ -1,3 +1,7 @@
 #content {
     background-color: #BBBBBB;
 }
+
+.img {
+    display: inline-block;
+}

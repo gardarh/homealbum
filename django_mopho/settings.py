@@ -127,4 +127,5 @@ except ImportError:
     print("Could not import local settings")
 
 STATICFILES_DIRS.append(PHOTOS_PARENTDIR)
+STATICFILES_DIRS.append(PHOTOS_THUMBS_PARENTDIR)
 
