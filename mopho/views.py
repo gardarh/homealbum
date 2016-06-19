@@ -5,11 +5,10 @@ from django.conf import settings
 
 from redis import Redis
 from rq import Queue
-from mopho.img_utils import generate_thumbnail
+import exifread
+from PIL import Image
 
-RESOLUTIONS = [(2560, 1500),
-               (1280, 700),
-               (250, 250)]
+from mopho import img_utils
 
 
 def home(request):
@@ -20,56 +19,65 @@ def home(request):
 
 
 def albums(request, album_name):
-    pics = _get_photo_list(album_name)
+    pics = img_utils.get_photo_list(settings.PHOTOS_BASEDIR, album_name)
     album_dir = "%s/%s" % (settings.PHOTOS_BASEDIR, album_name)
 
-    q = Queue(connection=Redis())
-
-    os.makedirs("%s/%s" % (settings.PHOTOS_THUMBS_BASEDIR, album_name), exist_ok=True)
-    for i, res in enumerate(RESOLUTIONS):
-        for fn in pics:
-            full_fn = "%s/%s" % (album_dir, fn)
-            out_fn = "%s/%s/%s-size%d.jpg" % (settings.PHOTOS_THUMBS_BASEDIR, album_name, fn, i)
-            if not os.path.isfile(out_fn):
-                q.enqueue(generate_thumbnail, full_fn, out_fn, res[0], res[1])
-
-    context = {'pic_urls': [(_get_photo_url(album_name, pic), _get_thumb_url(album_name, pic, 2)) for pic in pics],
-               'album_name': album_name,
-               'album_dir': album_dir}
+    context = {
+        'pic_urls': [(_get_photo_url(album_name, pic), img_utils.get_thumb_url(album_name, pic, 250)) for pic in pics],
+        'album_name': album_name,
+        'album_dir': album_dir}
     return render(request, 'mopho/album.html', context)
 
 
 def photo(request, album_name, photo_name):
-    pics = _get_photo_list(album_name)
+    pics = img_utils.get_photo_list(settings.PHOTOS_BASEDIR, album_name)
     cur_index = pics.index(photo_name)
     prev_url = None
     up_url = "/albums/%s" % (album_name,)
     next_url = None
+
     if cur_index > 0:
         prev_url = _get_photo_url(album_name, pics[cur_index - 1])
     if cur_index < len(pics) - 1:
         next_url = _get_photo_url(album_name, pics[cur_index + 1])
 
+    photo_urls = []
+    for i in range(len(img_utils.RESOLUTIONS)):
+        print(img_utils.RESOLUTIONS[i])
+        next_thumb_width = 0
+        if i + 1 < len(img_utils.RESOLUTIONS):
+            larger_thumb_path = "%s/%s" % (settings.PHOTOS_THUMBS_PARENTDIR,
+                                           img_utils.get_thumb_url(album_name, photo_name,
+                                                                   img_utils.RESOLUTIONS[i + 1][0]))
+            with open(larger_thumb_path, 'rb') as f_next:
+                img_obj_larger = Image.open(f_next)
+                next_thumb_width = img_obj_larger.width
+
+        thumb_url = img_utils.get_thumb_url(album_name, photo_name, img_utils.RESOLUTIONS[i][0])
+        thumb_path = "%s/%s" % (settings.PHOTOS_THUMBS_PARENTDIR, thumb_url)
+        with open(thumb_path, 'rb') as f:
+            img_obj = Image.open(f)
+
+            photo_urls.append({
+                'minwidth': img_obj.width + 1 if i > 0 else 0,
+                'maxwidth': next_thumb_width,
+                'url': thumb_url
+            })
+
+    print(photo_urls)
+
     context = {
-        'photo_url': _get_thumb_url(album_name, photo_name, 0),
+        'photo_urls': photo_urls,
         'photo_name': photo_name,
         'album_name': album_name,
         'prev_url': prev_url,
         'up_url': up_url,
         'next_url': next_url
-
     }
     return render(request, 'mopho/photo.html', context)
-
-
-def _get_thumb_url(album_name, photo_name, res):
-    return "thumbs/%s/%s-size%d.jpg" % (album_name, photo_name, res)
 
 
 def _get_photo_url(album_name, photo_name):
     return "/photo/%s/%s" % (album_name, photo_name)
 
 
-def _get_photo_list(album_name):
-    album_dir = "%s/%s" % (settings.PHOTOS_BASEDIR, album_name)
-    return sorted(os.listdir(album_dir))

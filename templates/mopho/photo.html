@@ -1,13 +1,50 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block head %}
+    {{  block.super }}
+    <script>
+document.onkeydown = function(e) {
+    var goto_url = null;
+    e = e || window.event;
+    switch(e.which || e.keyCode) {
+        case 37: // left
+            goto_url = document.getElementById("a_previmg");
+        break;
+
+        case 39: // right
+            goto_url = document.getElementById("a_nextimg");
+        break;
+        default: return; // exit this handler for other keys
+    }
+    if(goto_url != null) {
+        goto_url.click()
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+};
+    </script>
+    <style type="text/css">
+        {% for photo_url in photo_urls %}
+            @media screen and {% if photo_url.minwidth %}(min-width: {{ photo_url.minwidth }}px){% endif %}
+                {% if photo_url.minwidth and photo_url.maxwidth %}and{% endif %}
+                {%  if photo_url.maxwidth %}(max-width: {{ photo_url.maxwidth }}px){% endif %} {
+                #photo {
+                    content: url("{% static photo_url.url %}");
+                }
+            }
+        {% endfor %}
+
+    </style>
+{% endblock %}
+
 {% block title %}{{ album_name }}: {{ photo_name }}{% endblock %}
 
 {% block content %}
     <h1>{{ album_name }}: {{ photo_name }}</h1>
     <div>
-        <a href="{{ prev_url }}">prev</a> - <a href="{{ up_url }}">up</a> - <a href="{{ next_url }}">next</a>
+        {% if prev_url %}<a href="{{ prev_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
+        {% if next_url %}<a href="{{ next_url }}" id="a_nextimg">next</a>{% endif %}
     </div>
 
-    <div class="img"><img src="{% static photo_url %}"  /></div>
+    <div class="img"><img id="photo" /><!--<img src="{% static photo_url %}"  />--></div>
 {% endblock %}

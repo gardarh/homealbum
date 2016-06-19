@@ -5,6 +5,10 @@
 
 {% block content %}
     <h1>{{ album_name }}</h1>
+    <div>
+    <a href="/">Up</a>
+
+    </div>
 
     {% for pic_url in pic_urls %}
         <div class="img"><a href="{% static pic_url.0 %}"><img src="{% static pic_url.1 %}"  /></a></div>
