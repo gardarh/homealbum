@@ -75,4 +75,4 @@ def get_thumb_url(album_name, photo_name, width):
 
 def get_photo_list(photos_basedir, album_name):
     album_dir = "%s/%s" % (photos_basedir, album_name)
-    return sorted(os.listdir(album_dir))
+    return [it for it in sorted(os.listdir(album_dir)) if not it.startswith(".")] # exclude dotfiles

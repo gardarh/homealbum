@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
             img_utils.generate_album_thumbnails(
                 settings.PHOTOS_BASEDIR,
-                settings.PHOTOS_THUMBS_PARENTDIR,
+                settings.PHOTOS_THUMBS_BASEDIR,
                 settings.PHOTOS_THUMBS_PARENTDIR,
                 album_path
             )
