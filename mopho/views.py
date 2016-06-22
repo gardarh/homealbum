@@ -3,16 +3,13 @@ import os
 from django.shortcuts import render
 from django.conf import settings
 
-from redis import Redis
-from rq import Queue
-import exifread
 from PIL import Image
 
 from mopho import img_utils
 
 
 def home(request):
-    subdirs = os.listdir(settings.PHOTOS_BASEDIR)
+    subdirs = sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True)
 
     context = {'subdirs': subdirs}
     return render(request, 'mopho/index.html', context)
@@ -43,18 +40,21 @@ def photo(request, album_name, photo_name):
 
     photo_urls = []
     for i in range(len(img_utils.RESOLUTIONS)):
-        print(img_utils.RESOLUTIONS[i])
+        thumb_url = img_utils.get_thumb_url(album_name, photo_name, img_utils.RESOLUTIONS[i][0])
+        thumb_path = "%s/%s" % (settings.PHOTOS_THUMBS_PARENTDIR, thumb_url)
+        if not os.path.isfile(thumb_path):
+            continue
         next_thumb_width = 0
         if i + 1 < len(img_utils.RESOLUTIONS):
             larger_thumb_path = "%s/%s" % (settings.PHOTOS_THUMBS_PARENTDIR,
                                            img_utils.get_thumb_url(album_name, photo_name,
                                                                    img_utils.RESOLUTIONS[i + 1][0]))
+            if not os.path.isfile(larger_thumb_path):
+                continue
             with open(larger_thumb_path, 'rb') as f_next:
                 img_obj_larger = Image.open(f_next)
                 next_thumb_width = img_obj_larger.width
 
-        thumb_url = img_utils.get_thumb_url(album_name, photo_name, img_utils.RESOLUTIONS[i][0])
-        thumb_path = "%s/%s" % (settings.PHOTOS_THUMBS_PARENTDIR, thumb_url)
         with open(thumb_path, 'rb') as f:
             img_obj = Image.open(f)
 
@@ -63,8 +63,6 @@ def photo(request, album_name, photo_name):
                 'maxwidth': next_thumb_width,
                 'url': thumb_url
             })
-
-    print(photo_urls)
 
     context = {
         'photo_urls': photo_urls,

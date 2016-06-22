@@ -8,7 +8,7 @@ from mopho import img_utils
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        for album_path in os.listdir(settings.PHOTOS_BASEDIR):
+        for album_path in [d for d in sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True) if not d.startswith('.')]:
             print("Generating thumbnails for %s: " % (album_path,))
 
             img_utils.generate_album_thumbnails(
