@@ -41,7 +41,7 @@ document.onkeydown = function(e) {
 
 {% block content %}
     <h1>{{ album_name }}: {{ photo_name }}</h1>
-    <div>
+    <div><a href="{% static src_url %}">src</a> -
         {% if prev_url %}<a href="{{ prev_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
         {% if next_url %}<a href="{{ next_url }}" id="a_nextimg">next</a>{% endif %}
     </div>

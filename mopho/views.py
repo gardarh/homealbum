@@ -9,7 +9,7 @@ from mopho import img_utils
 
 
 def home(request):
-    subdirs = sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True)
+    subdirs = [d for d in sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True) if os.path.isdir("%s/%s" % (settings.PHOTOS_BASEDIR, d))]
 
     context = {'subdirs': subdirs}
     return render(request, 'mopho/index.html', context)
@@ -32,6 +32,7 @@ def photo(request, album_name, photo_name):
     prev_url = None
     up_url = "/albums/%s" % (album_name,)
     next_url = None
+    src_url = "photos/%s" % (img_utils.get_photo_url(album_name, photo_name),)
 
     if cur_index > 0:
         prev_url = _get_photo_url(album_name, pics[cur_index - 1])
@@ -65,6 +66,7 @@ def photo(request, album_name, photo_name):
             })
 
     context = {
+        'src_url': src_url,
         'photo_urls': photo_urls,
         'photo_name': photo_name,
         'album_name': album_name,
