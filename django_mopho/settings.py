@@ -123,6 +123,12 @@ PHOTOS_BASEDIR = "/dev/null"
 
 try:
     from django_mopho.local_settings import *
+    # There should be a local_settings.py file in the same dir as settings.py
+    # It should define the following variables
+    # PHOTOS_STATICDIR = "/home/foo/static" # the staticdir, this dir could contain symlinks to "photos" and "thumbs"
+    # PHOTOS_BASEDIR = "/home/foo/photos" # source photos dir
+    # PHOTOS_THUMBS_BASEDIR = "/home/foo/thumbs" # thumbs dir (only generated files will be here)
+
 except ImportError:
     print("Could not import local settings")
 
