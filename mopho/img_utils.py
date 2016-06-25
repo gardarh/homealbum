@@ -3,11 +3,11 @@ import functools
 from PIL import Image
 import os
 import logging
-from rq import Queue
-from redis import Redis
+import multiprocessing
 
 _logger = logging.getLogger(__name__)
 
+NUM_WORKERS = 8
 LISTTHUMB_SIZE = (250, 250)
 RESOLUTIONS = [LISTTHUMB_SIZE,
                (1200, 650),
@@ -44,13 +44,26 @@ def _image_transpose_exif(img):
 
 
 def generate_thumbnail(src_fn, dest_fn, max_width, max_height):
+    """
+    Returns True if thumb exists or on success, False on error.
+    :param src_fn:
+    :param dest_fn:
+    :param max_width:
+    :param max_height:
+    :return:
+    """
     if os.path.isfile(dest_fn):
-        print("Not processing file %s, already exists" % (dest_fn,))
-        return
-    im = Image.open(src_fn)
-    im = _image_transpose_exif(im)
-    im.thumbnail((max_width, max_height))
-    im.save(dest_fn, 'JPEG', quality=85)
+        _logger.debug("Not processing file %s, already exists" % (dest_fn,))
+        return True
+    try:
+        im = Image.open(src_fn)
+        im = _image_transpose_exif(im)
+        im.thumbnail((max_width, max_height))
+        im.save(dest_fn, 'JPEG', quality=85)
+        return True
+    except OSError as oe:
+        _logger.error("Could not generate thumb for %s, err: %s", src_fn, str(oe))
+        return False
 
 
 def generate_album_thumbnails(photos_basedir, thumbs_basedir, thumbs_parentdir, album_name, single_photo_name=None):
@@ -59,22 +72,27 @@ def generate_album_thumbnails(photos_basedir, thumbs_basedir, thumbs_parentdir, 
     else:
         pics = get_photo_list(photos_basedir, album_name)
 
-    q = Queue(connection=Redis())
-
     os.makedirs("%s/%s" % (thumbs_basedir, album_name), exist_ok=True)
-    for fn in pics:
-        generate_thumbnails(photos_basedir, thumbs_parentdir, q, album_name, fn)
+    pool = multiprocessing.Pool(NUM_WORKERS)
+    results = []
+    for fn in [p for p in pics if os.path.isfile(p) and not p.startswith(".")]:
+        results.append(pool.apply_async(generate_thumbnails, (photos_basedir, thumbs_parentdir, album_name, fn)))
+
+    print("Waiting for results...")
+    num_done = 0
+    for job in results:
+        job.get()
+        num_done += 1
+        print("Done %d/%d" % (num_done, len(results)))
 
 
-def generate_thumbnails(photos_basedir, thumbs_parentdir, q, album_name, filename):
+def generate_thumbnails(photos_basedir, thumbs_parentdir, album_name, filename):
     """
 
     :param photos_basedir:
     :type photos_basedir: str
     :param thumbs_parentdir:
     :type thumbs_parentdir: str
-    :param q:
-    :type q: rq.Queue
     :param album_name:
     :type album_name: str
     :param filename: Filename, without leading path
@@ -86,7 +104,7 @@ def generate_thumbnails(photos_basedir, thumbs_parentdir, q, album_name, filenam
     for res in RESOLUTIONS:
         out_fn = "%s/%s" % (thumbs_parentdir, get_thumb_url(album_name, filename, res[0]))
         if not os.path.isfile(out_fn):
-            q.enqueue(generate_thumbnail, full_fn, out_fn, res[0], res[1])
+            generate_thumbnail(full_fn, out_fn, res[0], res[1])
 
 
 def remove_thumbnails(thumbs_parentdir, album_name, filename):

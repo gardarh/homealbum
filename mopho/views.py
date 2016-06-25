@@ -1,15 +1,16 @@
+import datetime
 import os
 
-from django.shortcuts import render
+from PIL import Image, ExifTags
 from django.conf import settings
-
-from PIL import Image
+from django.shortcuts import render
 
 from mopho import img_utils
 
 
 def home(request):
-    subdirs = [d for d in sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True) if os.path.isdir("%s/%s" % (settings.PHOTOS_BASEDIR, d))]
+    subdirs = [d for d in sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True) if
+               os.path.isdir("%s/%s" % (settings.PHOTOS_BASEDIR, d))]
 
     context = {'subdirs': subdirs}
     return render(request, 'mopho/index.html', context)
@@ -39,6 +40,7 @@ def photo(request, album_name, photo_name):
     if cur_index < len(pics) - 1:
         next_url = _get_photo_url(album_name, pics[cur_index + 1])
 
+    # Calculate different thumb sizes
     photo_urls = []
     for i in range(len(img_utils.RESOLUTIONS)):
         thumb_url = img_utils.get_thumb_url(album_name, photo_name, img_utils.RESOLUTIONS[i][0])
@@ -65,6 +67,32 @@ def photo(request, album_name, photo_name):
                 'url': thumb_url
             })
 
+    # Extract exif data
+    img_obj = Image.open("%s/%s" % (settings.PHOTOS_PARENTDIR, src_url))
+
+    exif = {
+        ExifTags.TAGS[k]: v
+        for k, v in img_obj._getexif().items()
+        if k in ExifTags.TAGS
+        }
+    img_data = {}
+    if 'FNumber' in exif and len(exif['FNumber']) == 2:
+        img_data['f_number'] = "%.1f" % (float(exif['FNumber'][0]) / float(exif['FNumber'][1]),)
+    if 'ExposureTime' in exif and len(exif['ExposureTime']) == 2:
+        exposure_time = float(exif['ExposureTime'][0]) / float(exif['ExposureTime'][1])
+        if exposure_time < 1:
+            img_data['exposure_time'] = "1/%d" % (round(1 / exposure_time, 0))
+        else:
+            img_data['exposure_time'] = "%d''" % (round(exposure_time, 0))
+    if 'Make' in exif:
+        img_data['make'] = exif['Make']
+    if 'Model' in exif:
+        img_data['model'] = exif['Model']
+    if 'ISOSpeedRatings' in exif:
+        img_data['iso'] = exif['ISOSpeedRatings']
+    if 'DateTimeOriginal' in exif:
+        img_data['date'] = datetime.datetime.strptime(exif['DateTimeOriginal'], "%Y:%m:%d %H:%M:%S")
+
     context = {
         'src_url': src_url,
         'photo_urls': photo_urls,
@@ -72,12 +100,11 @@ def photo(request, album_name, photo_name):
         'album_name': album_name,
         'prev_url': prev_url,
         'up_url': up_url,
-        'next_url': next_url
+        'next_url': next_url,
+        'img_data': img_data
     }
     return render(request, 'mopho/photo.html', context)
 
 
 def _get_photo_url(album_name, photo_name):
     return "/photo/%s/%s" % (album_name, photo_name)
-
-

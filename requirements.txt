@@ -4,4 +4,3 @@ ExifRead==2.1.2
 Pillow==3.2.0
 redis==2.10.5
 requests==2.10.0
-rq==0.6.0

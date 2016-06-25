@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd1d0620-b707-4a94-8cd6-be5c7ebd56db" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/img_utils.py" afterPath="$PROJECT_DIR$/mopho/img_utils.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/management/commands/generate_thumbnails.py" afterPath="$PROJECT_DIR$/mopho/management/commands/generate_thumbnails.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/views.py" afterPath="$PROJECT_DIR$/mopho/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mopho/photo.html" afterPath="$PROJECT_DIR$/templates/mopho/photo.html" />
     </list>
     <ignored path="django_mopho.iws" />
@@ -29,164 +31,116 @@
     <favorites_list name="django_mopho" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/static/mopho/style.css">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="150">
-                  <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/django_mopho/settings.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="694">
-                  <caret line="124" column="31" selection-start-line="124" selection-start-column="31" selection-end-line="124" selection-end-column="31" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/mopho/views.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
-                  <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#0#9#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="queue.py" pinned="false" current-in-tab="false">
-            <entry file="file://$USER_HOME$/venvs/mopho/lib/python3.5/site-packages/rq/queue.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="296">
-                  <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
-                  <folding>
-                    <marker date="1466551148000" expanded="true" signature="984:1348" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="1423:1877" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="1432:1615" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-                    <marker date="1466551148000" expanded="true" signature="2002:2443" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="2296:2443" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="2467:2493" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="2518:2537" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="2571:2648" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="2670:3344" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="3369:3458" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="3693:3982" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="3891:3981" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4028:4202" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4240:4332" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4367:4461" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4497:4603" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4652:4953" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4977:5489" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="4986:5105" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-                    <marker date="1466551148000" expanded="true" signature="5251:5489" ph="..." />
-                    <marker date="1466551148000" expanded="true" signature="5556:5918" ph="..." />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/mopho/management/__init__.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="local_settings.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/django_mopho/local_settings.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="45">
-                  <caret line="3" column="64" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/base.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="45">
-                  <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="photo.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/mopho/photo.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="262">
-                  <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="frame.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/frame.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="45">
-                  <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="img_utils.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/mopho/img_utils.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="594">
-                  <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#0#16#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="generate_thumbnails.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/mopho/management/commands/generate_thumbnails.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="420">
-                  <caret line="28" column="100" selection-start-line="28" selection-start-column="100" selection-end-line="28" selection-end-column="100" />
-                  <folding>
-                    <element signature="e#0#9#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="local_settings.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/django_mopho/local_settings.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="45">
-                  <caret line="3" column="64" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="img_utils.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mopho/img_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="158">
+              <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/mopho/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/django_mopho/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1860">
+              <caret line="124" column="31" selection-start-line="124" selection-start-column="31" selection-end-line="124" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="generate_thumbnails.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mopho/management/commands/generate_thumbnails.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+                <marker date="1466891772000" expanded="true" signature="610:787" ph="..." />
+                <marker date="1466891772000" expanded="true" signature="827:1544" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mopho/management/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="local_settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/django_mopho/local_settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="64" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mopho/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="photo.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/mopho/photo.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="630">
+              <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="frame.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/frame.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -226,10 +180,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-613" />
-    <option name="y" value="-1600" />
-    <option name="width" value="2560" />
-    <option name="height" value="1600" />
+    <option name="width" value="1280" />
+    <option name="height" value="800" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -357,7 +309,7 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="SearchEverywhereHistoryKey" value="gen&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;img&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;css&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/static/mopho/style.css&#10;view&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;photo&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/templates/mopho/photo.html&#10;url&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/django_mopho/urls.py&#10;sett&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/django_mopho/settings.py" />
+    <property name="SearchEverywhereHistoryKey" value="img_&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;photo&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/templates/mopho/photo.html&#10;gene&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;gen&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;img&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;css&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/static/mopho/style.css&#10;view&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;url&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/django_mopho/urls.py&#10;sett&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/django_mopho/settings.py" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="true" />
   </component>
@@ -643,14 +595,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-613" y="-1600" width="2560" height="1600" extended-state="0" />
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13065925" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2657512" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15424837" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32328767" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4006536" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -767,7 +719,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -859,7 +811,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -951,7 +903,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1032,56 +984,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mopho/management/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mopho/thumb_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/venvs/mopho/lib/python3.5/site-packages/rq/queue.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
-          <folding>
-            <marker date="1466551148000" expanded="true" signature="984:1348" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="1423:1877" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="1432:1615" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1466551148000" expanded="true" signature="2002:2443" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="2296:2443" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="2467:2493" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="2518:2537" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="2571:2648" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="2670:3344" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="3369:3458" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="3693:3982" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="3891:3981" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4028:4202" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4240:4332" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4367:4461" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4497:4603" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4652:4953" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4977:5489" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="4986:5105" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1466551148000" expanded="true" signature="5251:5489" ph="..." />
-            <marker date="1466551148000" expanded="true" signature="5556:5918" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django_mopho/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="694">
-          <caret line="124" column="31" selection-start-line="124" selection-start-column="31" selection-end-line="124" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -1102,19 +1008,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/mopho/style.css">
+    <entry file="file://$USER_HOME$/venvs/mopho/lib/python3.5/site-packages/rq/queue.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state relative-caret-position="296">
+          <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/mopho/photo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
+        <state relative-caret-position="630">
+          <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mopho/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1126,30 +1042,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mopho/views.py">
+    <entry file="file://$PROJECT_DIR$/mopho/management/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mopho/management/commands/generate_thumbnails.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="100" selection-start-line="28" selection-start-column="100" selection-end-line="28" selection-end-column="100" />
+        <state relative-caret-position="90">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <marker date="1466891772000" expanded="true" signature="610:787" ph="..." />
+            <marker date="1466891772000" expanded="true" signature="827:1544" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django_mopho/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1860">
+          <caret line="124" column="31" selection-start-line="124" selection-start-column="31" selection-end-line="124" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/mopho/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mopho/img_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+        <state relative-caret-position="158">
+          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>

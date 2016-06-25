@@ -40,11 +40,18 @@ document.onkeydown = function(e) {
 {% block title %}{{ album_name }}: {{ photo_name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ album_name }}: {{ photo_name }}</h1>
     <div><a href="{% static src_url %}">src</a> -
         {% if prev_url %}<a href="{{ prev_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
         {% if next_url %}<a href="{{ next_url }}" id="a_nextimg">next</a>{% endif %}
     </div>
 
     <div class="img"><img id="photo" /><!--<img src="{% static photo_url %}"  />--></div>
+    <div>
+    {% if img_data.date %}Shutter: {{  img_data.exposure_time }} - {% endif %}
+    {% if img_data.maker %}{{  img_data.maker }} {{ img_data.model }} - {% endif %}
+    {% if img_data.iso %}ISO: {{  img_data.iso }} - {% endif %}
+    {% if img_data.f_number %}f/{{  img_data.f_number }} - {% endif %}
+    {% if img_data.exposure_time %}Shutter: {{  img_data.exposure_time }} - {% endif %}
+    {% if img_data.date %}Date: {{  img_data.date | date }}, {{  img_data.date | time:"H:i" }}{% endif %}
+    </div>
 {% endblock %}
