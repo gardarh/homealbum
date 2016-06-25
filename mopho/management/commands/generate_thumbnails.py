@@ -26,13 +26,12 @@ class Command(BaseCommand):
                 print("Removing old thumbnails...")
 
                 # Single photo, let's remove old thumbnails
-                img_utils.remove_thumbnails(settings.PHOTOS_THUMBS_PARENTDIR, album_name, photo_name)
+                img_utils.remove_thumbnails(settings.PHOTOS_THUMBS_BASEDIR, album_name, photo_name)
             else:
                 print("Generating thumbnails for %s: " % (album_name,))
             img_utils.generate_album_thumbnails(
                 settings.PHOTOS_BASEDIR,
                 settings.PHOTOS_THUMBS_BASEDIR,
-                settings.PHOTOS_THUMBS_PARENTDIR,
                 album_name,
                 single_photo_name=photo_name
 

@@ -50,7 +50,7 @@ document.onkeydown = function(e) {
     {% if img_data.date %}Shutter: {{  img_data.exposure_time }} - {% endif %}
     {% if img_data.maker %}{{  img_data.maker }} {{ img_data.model }} - {% endif %}
     {% if img_data.iso %}ISO: {{  img_data.iso }} - {% endif %}
-    {% if img_data.f_number %}f/{{  img_data.f_number }} - {% endif %}
+    {% if img_data.f_number %}Aperture: f/{{  img_data.f_number }} - {% endif %}
     {% if img_data.exposure_time %}Shutter: {{  img_data.exposure_time }} - {% endif %}
     {% if img_data.date %}Date: {{  img_data.date | date }}, {{  img_data.date | time:"H:i" }}{% endif %}
     </div>

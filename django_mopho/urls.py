@@ -21,6 +21,6 @@ from mopho import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
-    url(r'^albums/(?P<album_name>[A-Za-z 0-9\-_]+)/$', views.albums, name='albums'),
+    url(r'^albums/(?P<album_name>[A-Za-z 0-9\-_]+)/$', views.album, name='albums'),
     url(r'^photo/(?P<album_name>[A-Za-z 0-9\-_]+)/(?P<photo_name>[A-Za-z 0-9\-_\.]+)$', views.photo, name='photo')
 ]
