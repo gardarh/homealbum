@@ -47,11 +47,10 @@ document.onkeydown = function(e) {
 
     <div class="img"><img id="photo" /><!--<img src="{% static photo_url %}"  />--></div>
     <div>
-    {% if img_data.make %}{{  img_data.make }} {{ img_data.model }} - {% endif %}
+    {% if img_data.make %}Camera: {{  img_data.make }} {{ img_data.model }} - {% endif %}
     {% if img_data.iso %}ISO: {{  img_data.iso }} - {% endif %}
     {% if img_data.f_number %}Aperture: f/{{  img_data.f_number }} - {% endif %}
-    {% if img_data.date %}Shutter: {{  img_data.exposure_time }} - {% endif %}
-    {% if img_data.exposure_time %}Shutter: {{  img_data.exposure_time }} - {% endif %}
+    {% if img_data.date %}Shutter: {{  img_data.exposure_time }}s - {% endif %}
     {% if img_data.date %}Date: {{  img_data.date | date }}, {{  img_data.date | time:"H:i" }}{% endif %}
     </div>
 {% endblock %}

@@ -21,7 +21,7 @@ def album(request, album_name):
     album_dir = "%s/%s" % (settings.PHOTOS_BASEDIR, album_name)
 
     context = {
-        'pic_urls': [(_get_photo_url(album_name, pic), _get_thumb_url(album_name, pic, 250)) for pic in pics],
+        'pic_urls': [(_get_photopage_url(album_name, pic), _get_thumb_url(album_name, pic, 250)) for pic in pics],
         'album_name': album_name,
         'album_dir': album_dir}
     return render(request, 'mopho/album.html', context)
@@ -35,9 +35,9 @@ def photo(request, album_name, photo_name):
     next_url = None
 
     if cur_index > 0:
-        prev_url = _get_photo_url(album_name, pics[cur_index - 1])
+        prev_url = _get_photopage_url(album_name, pics[cur_index - 1])
     if cur_index < len(pics) - 1:
-        next_url = _get_photo_url(album_name, pics[cur_index + 1])
+        next_url = _get_photopage_url(album_name, pics[cur_index + 1])
 
     # Calculate different thumb sizes
     photo_urls = []
@@ -68,7 +68,7 @@ def photo(request, album_name, photo_name):
             })
 
     # Extract exif data
-    src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, img_utils.get_photo_relpath(album_name, photo_name),)
+    src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, img_utils.get_photo_relpath(album_name, photo_name))
     img_obj = Image.open(src_path)
 
     exif = {
@@ -95,7 +95,7 @@ def photo(request, album_name, photo_name):
         img_data['date'] = datetime.datetime.strptime(exif['DateTimeOriginal'], "%Y:%m:%d %H:%M:%S")
 
     context = {
-        'src_url': src_path,
+        'src_url': _get_photo_url(album_name, photo_name),
         'photo_urls': photo_urls,
         'photo_name': photo_name,
         'album_name': album_name,
@@ -107,9 +107,13 @@ def photo(request, album_name, photo_name):
     return render(request, 'mopho/photo.html', context)
 
 
-def _get_photo_url(album_name, photo_name):
+def _get_photopage_url(album_name, photo_name):
     return "/photo/%s" % (img_utils.get_photo_relpath(album_name, photo_name),)
 
 
 def _get_thumb_url(album_name, photo_name, thumb_width):
     return "thumbs/%s" % (img_utils.get_thumb_relpath(album_name, photo_name, thumb_width),)
+
+
+def _get_photo_url(album_name, photo_name):
+    return "photos/%s" % (img_utils.get_photo_relpath(album_name, photo_name),)
