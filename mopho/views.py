@@ -71,28 +71,30 @@ def photo(request, album_name, photo_name):
     src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, img_utils.get_photo_relpath(album_name, photo_name))
     img_obj = Image.open(src_path)
 
-    exif = {
-        ExifTags.TAGS[k]: v
-        for k, v in img_obj._getexif().items()
-        if k in ExifTags.TAGS
-        }
     img_data = {}
-    if 'FNumber' in exif and len(exif['FNumber']) == 2:
-        img_data['f_number'] = "%.1f" % (float(exif['FNumber'][0]) / float(exif['FNumber'][1]),)
-    if 'ExposureTime' in exif and len(exif['ExposureTime']) == 2:
-        exposure_time = float(exif['ExposureTime'][0]) / float(exif['ExposureTime'][1])
-        if exposure_time < 1:
-            img_data['exposure_time'] = "1/%d" % (round(1 / exposure_time, 0))
-        else:
-            img_data['exposure_time'] = "%d''" % (round(exposure_time, 0))
-    if 'Make' in exif:
-        img_data['make'] = exif['Make']
-    if 'Model' in exif:
-        img_data['model'] = exif['Model']
-    if 'ISOSpeedRatings' in exif:
-        img_data['iso'] = exif['ISOSpeedRatings']
-    if 'DateTimeOriginal' in exif:
-        img_data['date'] = datetime.datetime.strptime(exif['DateTimeOriginal'], "%Y:%m:%d %H:%M:%S")
+    exif_raw = img_obj._getexif()
+    if exif_raw:
+        exif = {
+            ExifTags.TAGS[k]: v
+            for k, v in exif_raw.items()
+            if k in ExifTags.TAGS
+        }
+        if 'FNumber' in exif and len(exif['FNumber']) == 2:
+            img_data['f_number'] = "%.1f" % (float(exif['FNumber'][0]) / float(exif['FNumber'][1]),)
+        if 'ExposureTime' in exif and len(exif['ExposureTime']) == 2:
+            exposure_time = float(exif['ExposureTime'][0]) / float(exif['ExposureTime'][1])
+            if exposure_time < 1:
+                img_data['exposure_time'] = "1/%d" % (round(1 / exposure_time, 0))
+            else:
+                img_data['exposure_time'] = "%d''" % (round(exposure_time, 0))
+        if 'Make' in exif:
+            img_data['make'] = exif['Make']
+        if 'Model' in exif:
+            img_data['model'] = exif['Model']
+        if 'ISOSpeedRatings' in exif:
+            img_data['iso'] = exif['ISOSpeedRatings']
+        if 'DateTimeOriginal' in exif:
+            img_data['date'] = datetime.datetime.strptime(exif['DateTimeOriginal'], "%Y:%m:%d %H:%M:%S")
 
     context = {
         'src_url': _get_photo_url(album_name, photo_name),
