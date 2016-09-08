@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd1d0620-b707-4a94-8cd6-be5c7ebd56db" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/mopho/management/commands/generate_thumbnails.py" afterPath="$PROJECT_DIR$/mopho/management/commands/makethumbs.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/django_mopho.iml" afterPath="$PROJECT_DIR$/.idea/django_mopho.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django_mopho/urls.py" afterPath="$PROJECT_DIR$/django_mopho/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/admin.py" afterPath="$PROJECT_DIR$/mopho/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/img_utils.py" afterPath="$PROJECT_DIR$/mopho/img_utils.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/models.py" afterPath="$PROJECT_DIR$/mopho/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mopho/views.py" afterPath="$PROJECT_DIR$/mopho/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mopho/album.html" afterPath="$PROJECT_DIR$/templates/mopho/album.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mopho/index.html" afterPath="$PROJECT_DIR$/templates/mopho/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mopho/photo.html" afterPath="$PROJECT_DIR$/templates/mopho/photo.html" />
     </list>
     <ignored path="django_mopho.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -169,8 +158,8 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/mopho/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="569">
-                  <caret line="51" column="50" selection-start-line="51" selection-start-column="50" selection-end-line="51" selection-end-column="50" />
+                <state relative-caret-position="149">
+                  <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -215,8 +204,8 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/mopho/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="840">
-                  <caret line="84" column="62" selection-start-line="84" selection-start-column="62" selection-end-line="84" selection-end-column="62" />
+                <state relative-caret-position="420">
+                  <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
                   <folding>
                     <element signature="e#0#15#0" expanded="true" />
                   </folding>
@@ -330,8 +319,8 @@
         <option value="dbtable:/a88471c2/23a91adb-57f3-425f-bb42-692566955667/mopho_mediafiletag" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/23a91adb-57f3-425f-bb42-692566955667/console.sql" />
         <option value="$PROJECT_DIR$/templates/mopho/photo.html" />
-        <option value="$PROJECT_DIR$/mopho/models.py" />
         <option value="$PROJECT_DIR$/mopho/views.py" />
+        <option value="$PROJECT_DIR$/mopho/models.py" />
       </list>
     </option>
   </component>
@@ -657,7 +646,7 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="SearchEverywhereHistoryKey" value="model&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;view&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;make&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/makethumbs.py&#10;urls&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/urls.py&#10;maked&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/makedb.py&#10;mode&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;vie&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;makedb&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/makedb.py&#10;gen_ph&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/gen_photodb.py&#10;loca&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/local_settings.py&#10;url&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/urls.py&#10;mod&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;v&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;models&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;gen_th&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;local&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/local_settings.py&#10;gen_&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;get_photo_&#9;null&#9;null&#10;requirements.txt&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/requirements.txt&#10;MODE&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;admin&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/admin.py&#10;img&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;setting&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/settings.py&#10;img_&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;bufferedread&#9;null&#9;null&#10;photo&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/templates/mopho/photo.html&#10;gene&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;settings&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/settings.py&#10;gen&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;css&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/static/mopho/style.css&#10;sett&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/django_mopho/settings.py" />
+    <property name="SearchEverywhereHistoryKey" value="mode&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;loca&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/local_settings.py&#10;model&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;view&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;make&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/makethumbs.py&#10;urls&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/urls.py&#10;maked&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/makedb.py&#10;vie&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;makedb&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/makedb.py&#10;gen_ph&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/gen_photodb.py&#10;url&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/urls.py&#10;mod&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;v&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/views.py&#10;models&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;gen_th&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;local&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/local_settings.py&#10;gen_&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;get_photo_&#9;null&#9;null&#10;requirements.txt&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/requirements.txt&#10;MODE&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/models.py&#10;admin&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/admin.py&#10;img&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;setting&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/settings.py&#10;img_&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/img_utils.py&#10;bufferedread&#9;null&#9;null&#10;photo&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/templates/mopho/photo.html&#10;gene&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;settings&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/django_mopho/settings.py&#10;gen&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/mopho/management/commands/generate_thumbnails.py&#10;css&#9;FILE&#9;file:///Users/gardarh/Dropbox/work/django_mopho/static/mopho/style.css&#10;sett&#9;FILE&#9;file:///Users/gardarh/Dropbox/django_mopho/django_mopho/settings.py" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/manage.py" />
     <property name="FullScreen" value="true" />
   </component>
@@ -1384,14 +1373,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/django_mopho/local_settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/venvs/mopho/lib/python3.5/site-packages/django/conf/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="262">
@@ -1575,22 +1556,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mopho/models.py">
+    <entry file="file://$PROJECT_DIR$/mopho/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="51" column="50" selection-start-line="51" selection-start-column="50" selection-end-line="51" selection-end-column="50" />
+        <state relative-caret-position="420">
+          <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mopho/views.py">
+    <entry file="file://$PROJECT_DIR$/django_mopho/local_settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="84" column="62" selection-start-line="84" selection-start-column="62" selection-end-line="84" selection-end-column="62" />
+        <state relative-caret-position="45">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mopho/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

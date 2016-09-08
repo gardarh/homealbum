@@ -21,7 +21,7 @@ class MediaFile(models.Model):
     file_location = models.CharField(max_length=1024, null=False, unique=True, db_index=True)
     width = models.IntegerField()
     height = models.IntegerField()
-    date_taken = models.DateTimeField()
+    date_taken = models.DateTimeField(null=True)
 
     def __str__(self):
         return "%s" % (self.file_location,)
