@@ -21,6 +21,10 @@ from mopho import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
-    url(r'^albums/(?P<album_name>[A-Za-z 0-9\-_]+)/$', views.album, name='albums'),
-    url(r'^photo/(?P<album_name>[A-Za-z 0-9\-_]+)/(?P<photo_name>[A-Za-z 0-9\-_\.]+)$', views.photo, name='photo')
+    url(r'^albums/(?P<album_name>[A-Za-z 0-9\-_]+)/$', views.catalog_by_album, name='albums'),
+    url(r'^photo/album/(?P<album_name>[A-Za-z 0-9\-_]+)/(?P<albumitem_id>[0-9]+)$', views.photo_by_album, name='photo_by_album'),
+    url(r'^photo/tag/(?P<tag_name>[A-Za-z 0-9\-_]+)/(?P<photo_hash>[a-f0-9]+)$', views.photo_by_tag, name='photo_by_tag'),
+    url(r'^photo/hash/(?P<photo_hash>[a-f0-9]+)$', views.photo_by_hash, name='photo_by_hash'),
+    url(r'^tags/$', views.tags, name='tags'),
+    url(r'^tags/(?P<tag_name>[A-Za-z0-9\-_]+)/$', views.catalog_by_tag, name='single_tag')
 ]

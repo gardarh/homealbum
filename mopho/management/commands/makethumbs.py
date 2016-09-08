@@ -17,8 +17,7 @@ class Command(BaseCommand):
         if album_name is not None:
             album_list = [album_name]
         else:
-            album_list = [d for d in sorted(os.listdir(settings.PHOTOS_BASEDIR), reverse=True) if
-                          not d.startswith('.') and os.path.isdir("%s/%s" % (settings.PHOTOS_BASEDIR, d))]
+            album_list = img_utils.get_album_list(settings.PHOTOS_BASEDIR)
 
         for album_name in album_list:
             if photo_name:

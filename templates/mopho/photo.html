@@ -24,12 +24,12 @@ document.onkeydown = function(e) {
 };
     </script>
     <style type="text/css">
-        {% for photo_url in photo_urls %}
-            @media screen and {% if photo_url.minwidth %}(min-width: {{ photo_url.minwidth }}px){% endif %}
-                {% if photo_url.minwidth and photo_url.maxwidth %}and{% endif %}
-                {%  if photo_url.maxwidth %}(max-width: {{ photo_url.maxwidth }}px){% endif %} {
+        {% for thumb_info in thumb_infos %}
+            @media screen and {% if thumb_info.minwidth %}(min-width: {{ thumb_info.minwidth }}px){% endif %}
+                {% if thumb_info.minwidth and thumb_info.maxwidth %}and{% endif %}
+                {%  if thumb_info.maxwidth %}(max-width: {{ thumb_info.maxwidth }}px){% endif %} {
                 #photo {
-                    content: url("{% static photo_url.url %}");
+                    content: url("{% static thumb_info.url %}");
                 }
             }
         {% endfor %}
@@ -40,17 +40,26 @@ document.onkeydown = function(e) {
 {% block title %}{{ album_name }}: {{ photo_name }}{% endblock %}
 
 {% block content %}
-    <div><a href="{% static src_url %}">src</a> -
-        {% if prev_url %}<a href="{{ prev_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
-        {% if next_url %}<a href="{{ next_url }}" id="a_nextimg">next</a>{% endif %}
+    <div><a href="{% static src_pic_url %}">src</a> -
+        {% if prev_pic_url %}<a href="{{ prev_pic_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
+        {% if next_pic_url %}<a href="{{ next_pic_url }}" id="a_nextimg">next</a>{% endif %}
+    tags: [{% for tag in tags %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+        <form method="POST" action="">
+            {%  csrf_token %}
+            {% if is_starred %}
+            <input type="submit" name="unstar" value="Unstar" />
+            {% else %}
+            <input type="submit" name="star" value="Star" />
+            {% endif %}
+        </form>
     </div>
 
     <div class="img"><img id="photo" /><!--<img src="{% static photo_url %}"  />--></div>
     <div>
-    {% if img_data.make %}Camera: {{  img_data.make }} {{ img_data.model }} - {% endif %}
-    {% if img_data.iso %}ISO: {{  img_data.iso }} - {% endif %}
-    {% if img_data.f_number %}Aperture: f/{{  img_data.f_number }} - {% endif %}
-    {% if img_data.date %}Shutter: {{  img_data.exposure_time }}s - {% endif %}
-    {% if img_data.date %}Date: {{  img_data.date | date }}, {{  img_data.date | time:"H:i" }}{% endif %}
+    {% if img_exif_data.make %}Camera: {{  img_exif_data.make }} {{ img_exif_data.model }} - {% endif %}
+    {% if img_exif_data.iso %}ISO: {{  img_exif_data.iso }} - {% endif %}
+    {% if img_exif_data.f_number %}Aperture: f/{{  img_exif_data.f_number }} - {% endif %}
+    {% if img_exif_data.date %}Shutter: {{  img_exif_data.exposure_time }}s - {% endif %}
+    {% if img_exif_data.date %}Date: {{  img_exif_data.date | date }}, {{  img_exif_data.date | time:"H:i" }}{% endif %}
     </div>
 {% endblock %}

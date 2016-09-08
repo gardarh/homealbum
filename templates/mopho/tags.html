@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}tags{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for tag in tags %}
+        <li><a href="/tags/{{ tag.name }}/">{{ tag.name }}</a> ({{ tag.mediafiletag_set.count }})</li>
+    {%  endfor %}
+    </ul>
+{% endblock %}

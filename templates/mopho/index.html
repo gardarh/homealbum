@@ -3,11 +3,13 @@
 {% block title %}Title hello{% endblock %}
 
 {% block content %}
-    <h1>Some content</h1>
+    <h1>Photos</h1>
+    <a href="/tags/">tags</a>
+    <a href="/search/">search</a>
 
     <ul>
-    {% for subdir in subdirs %}
-        <li><a href="albums/{{ subdir }}/">{{ subdir }}</a></li>
+    {% for album in albums %}
+        <li><a href="albums/{{ album.name }}/">{{ album.name }}</a> ({{ album.earliest_date|date:"d.m.Y" }} - {{ album.latest_date|date:"d.m.Y" }})</li>
     {% endfor %}
     </ul>
 {% endblock %}

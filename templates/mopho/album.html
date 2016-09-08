@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block title %}{{ album_name }}{% endblock %}
+{% block title %}{{ album.name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ album_name }}</h1>
+    <h1>{{ album.name }}</h1>
     <div>
     <a href="/">Up</a>
 
     </div>
 
-    {% for pic_url in pic_urls %}
-        <div class="img"><a href="{% static pic_url.0 %}"><img src="{% static pic_url.1 %}"  /></a></div>
+    {% for pic in pics %}
+        <div class="img"><a href="{{ pic.link_url }}"><img src="{% static pic.thumb_url %}"  /></a></div>
     {% endfor %}
 {% endblock %}
