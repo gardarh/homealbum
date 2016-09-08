@@ -47,10 +47,12 @@ class Command(BaseCommand):
                         im.close()
                         width, height = im.size
                         img_exif = im._getexif()
-                        img_datetimedata = img_exif.get(EXIF_DATETIMEORIGINAL_TAG, None)
-                        img_datetime = img_utils.parse_exif_date(img_datetimedata) if img_datetimedata else None
-                        if img_datetime:
-                            img_datetime = img_datetime.replace(tzinfo=pytz.UTC)
+                        img_datetime = None
+                        if img_exif:
+                            img_datetimedata = img_exif.get(EXIF_DATETIMEORIGINAL_TAG, None)
+                            img_datetime = img_utils.parse_exif_date(img_datetimedata) if img_datetimedata else None
+                            if img_datetime:
+                                img_datetime = img_datetime.replace(tzinfo=pytz.UTC)
 
                         mf = MediaFile(file_hash=hashsum, mediatype=models.MEDIATYPE_PHOTO, file_location=photo_relpath,
                                        width=width, height=height, date_taken=img_datetime)
