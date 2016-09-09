@@ -1,17 +1,15 @@
 import datetime
 import functools
 import hashlib
+import logging
+import os
 
 from PIL import ExifTags
 from PIL import Image
-import os
-import logging
-import multiprocessing
 
 _logger = logging.getLogger(__name__)
 
 CHUNKSIZE = 8192
-NUM_WORKERS = 8
 LISTTHUMB_SIZE = (250, 250)
 RESOLUTIONS = [LISTTHUMB_SIZE,
                (1200, 650),
@@ -73,7 +71,7 @@ def generate_thumbnail(src_fn, dest_fn, max_width, max_height):
         return False
 
 
-def generate_album_thumbnails(photos_basedir, thumbs_basedir, album_name, single_photo_name=None):
+def generate_album_thumbnails(pool, photos_basedir, thumbs_basedir, album_name, single_photo_name=None):
     debug = False
     if single_photo_name:
         pics = [single_photo_name]
@@ -87,7 +85,6 @@ def generate_album_thumbnails(photos_basedir, thumbs_basedir, album_name, single
         for abs_fn in [p for p in abs_pics if os.path.isfile(p) and not p.startswith(".")]:
             generate_photo_thumbnails(thumbs_basedir, abs_fn)
     else:
-        pool = multiprocessing.Pool(NUM_WORKERS)
         results = []
         for abs_fn in [p for p in abs_pics if os.path.isfile(p) and not p.startswith(".")]:
             results.append(pool.apply_async(generate_photo_thumbnails, (thumbs_basedir, abs_fn)))
@@ -122,9 +119,9 @@ def generate_photo_thumbnails(thumbs_basedir, src_photo_abs_path):
             generate_thumbnail(src_photo_abs_path, out_fn, res[0], res[1])
 
 
-def remove_thumbnails(thumbs_basedir, album_name, filename):
+def remove_thumbnails(thumbs_basedir, photo_hash):
     for res in RESOLUTIONS:
-        rm_fn = "%s/%s" % (thumbs_basedir, get_thumb_relpath(album_name, filename, res[0]))
+        rm_fn = "%s/%s" % (thumbs_basedir, get_thumb_relpath(photo_hash, res[0]))
         if os.path.isfile(rm_fn):
             os.remove(rm_fn)
 
@@ -262,6 +259,8 @@ def calculate_thumb_sizes(thumbs_basedir, pic_mediafile):
 def extract_exif_data(photo_src_path):
     img_obj = Image.open(photo_src_path)
     img_data = {}
+    if img_obj.format != 'JPEG':
+        return img_data
     exif_raw = img_obj._getexif()
     if exif_raw:
         exif = {
