@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -9,6 +10,9 @@ from mopho import img_utils
 from mopho import models
 from mopho.models import MediaFile, Tag, STARRED_TAGNAME, Album, AlbumItem
 from PIL import Image
+
+_logger = logging.getLogger(__name__)
+_logger.setLevel(logging.DEBUG)
 
 EXIF_DATETIMEORIGINAL_TAG = 36867
 
@@ -26,7 +30,7 @@ class Command(BaseCommand):
             album_list = img_utils.get_album_list(settings.PHOTOS_BASEDIR)
 
         for album_name in album_list:
-            print("Generating db items for %s: " % (album_name,))
+            _logger.debug("Generating db items for %s: ", album_name)
             try:
                 album = Album.objects.get(name=album_name)
             except Album.DoesNotExist:
@@ -51,9 +55,13 @@ class Command(BaseCommand):
                             img_exif = im._getexif()
                             if img_exif:
                                 img_datetimedata = img_exif.get(EXIF_DATETIMEORIGINAL_TAG, None)
-                                img_datetime = img_utils.parse_exif_date(img_datetimedata) if img_datetimedata else None
-                                if img_datetime:
-                                    img_datetime = img_datetime.replace(tzinfo=pytz.UTC)
+                                try:
+                                    img_datetime = img_utils.parse_exif_date(img_datetimedata) if img_datetimedata else None
+                                    if img_datetime:
+                                        img_datetime = img_datetime.replace(tzinfo=pytz.UTC)
+                                except ValueError as v:
+                                    _logger.warn("Could not process date for %s, err: %s", photo_abspath, str(v))
+
 
                         mf = MediaFile(file_hash=hashsum, mediatype=models.MEDIATYPE_PHOTO, file_location=photo_relpath,
                                        width=width, height=height, date_taken=img_datetime)
@@ -68,7 +76,7 @@ class Command(BaseCommand):
                     album_item.save()
 
                 except IOError:
-                    print("Could not process file: %s" % (photo_abspath,))
+                    _logger.warn("Could not process file: %s", photo_abspath)
             album.gen_album_dates()
             album.save()
 
