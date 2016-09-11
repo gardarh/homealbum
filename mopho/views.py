@@ -1,7 +1,5 @@
-import datetime
 import os
 
-from PIL import Image, ExifTags
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -21,7 +19,7 @@ def catalog_by_album(request, album_name):
         {
             'link_url': p.media_file.get_photopage_url(album_item=p),
             'thumb_url': p.media_file.get_thumb_url()
-        } for p in cur_album.albumitem_set.all().order_by('media_file__date_taken')]
+        } for p in cur_album.get_album_items()]
     context = {
         'pics': pics,
         'album': cur_album
@@ -31,7 +29,7 @@ def catalog_by_album(request, album_name):
 
 def catalog_by_tag(request, tag_name):
     tag = Tag.objects.get(name=tag_name)
-    pics = [t.media_file for t in tag.mediafiletag_set.order_by('media_file__date_taken').all()]
+    pics = tag.get_mediafiles()
 
     context = {
         'pics': [
@@ -70,15 +68,8 @@ def photo_by_tag(request, tag_name, photo_hash):
         # TODO: Notify user about starring/unstarring with a disappearing message
         return HttpResponseRedirect(up_url)
 
-
-    next_pic_list = tag.mediafiletag_set. \
-                        filter(media_file__date_taken__gt=pic_mediafile.date_taken). \
-                        order_by('media_file__date_taken')[0:1]
-    next_pic = next_pic_list[0].media_file if len(next_pic_list) > 0 else None
-    prev_pic_list = tag.mediafiletag_set. \
-                        filter(media_file__date_taken__lt=pic_mediafile.date_taken). \
-                        order_by('-media_file__date_taken')[0:1]
-    prev_pic = prev_pic_list[0].media_file if len(prev_pic_list) > 0 else None
+    next_pic = tag.next_mediafile(pic_mediafile)
+    prev_pic = tag.prev_mediafile(pic_mediafile)
 
     context = {
         'thumb_infos': thumb_info,
@@ -102,7 +93,6 @@ def photo_by_hash(request, photo_hash):
 
 def photo_by_album(request, album_name, albumitem_id):
     album_item = AlbumItem.objects.get(id=albumitem_id)
-    album = Album.objects.get(name=album_name)
     pic_mediafile = album_item.media_file
     up_url = "/albums/%s" % (album_name,)
 
@@ -127,12 +117,8 @@ def photo_by_album(request, album_name, albumitem_id):
         # TODO: Notify user about starring/unstarring with a disappearing message
         return HttpResponseRedirect(request.path)
 
-    next_pic_list = AlbumItem.objects.filter(album=album).filter(
-        media_file__date_taken__gt=pic_mediafile.date_taken).order_by('media_file__date_taken')[0:1]
-    next_pic = next_pic_list[0] if len(next_pic_list) > 0 else None
-    prev_pic_list = AlbumItem.objects.filter(album=album).filter(
-        media_file__date_taken__lt=pic_mediafile.date_taken).order_by('-media_file__date_taken')[0:1]
-    prev_pic = prev_pic_list[0] if len(prev_pic_list) > 0 else None
+    next_pic = album_item.next_item()
+    prev_pic = album_item.prev_item()
 
     context = {
         'thumb_infos': thumb_info,
@@ -150,7 +136,7 @@ def photo_by_album(request, album_name, albumitem_id):
     return render(request, 'mopho/photo.html', context)
 
 
-def tags(request):
+def tag_list(request):
     tags = Tag.objects.all()
     context = {
         'tags': tags

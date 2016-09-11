@@ -36,7 +36,12 @@ JPEG_QUALITY = 85
 
 
 def _image_transpose_exif(img):
-    n_exif_orientation = img._getexif().get(EXIF_ORIENTATION_TAG, 1)
+    if img.format != 'JPEG':
+        return img
+    img_exif = img._getexif()
+    if img_exif is None:
+        return img
+    n_exif_orientation = img_exif.get(EXIF_ORIENTATION_TAG, 1)
 
     if n_exif_orientation not in EXIF_TRANSPOSE_SEQUENCES:
         _logger.error("Invalid exif op index: %d", n_exif_orientation)

@@ -1,5 +1,3 @@
-import os
-
 from django.db import models
 
 from mopho import img_utils
@@ -15,9 +13,12 @@ STARRED_TAGNAME = 'starred'
 
 
 class MediaFile(models.Model):
-    # NOTE: same file may exist in multiple locations
     file_hash = models.CharField(max_length=32, primary_key=True)
     mediatype = models.CharField(max_length=16, choices=MEDIATYPE_CHOICES)
+    # NOTE: same file may exist in multiple locations
+    # Therefore file_location may be different here from what it is in the referenced MediaFile
+    # This will happen if a photo is copied across two albums or the same file has a copy by a different name
+    # in the same album
     file_location = models.CharField(max_length=1024, null=False, unique=True, db_index=True)
     width = models.IntegerField()
     height = models.IntegerField()
@@ -69,6 +70,9 @@ class Album(models.Model):
         if len(last_pic_list) > 0:
             self.latest_date = last_pic_list[0].media_file.date_taken
 
+    def get_album_items(self):
+        return self.albumitem_set.all().order_by('media_file__date_taken', 'file_location')
+
 
 class AlbumItem(models.Model):
     # NOTE: there may be two copies of the exact same file with different names in same album
@@ -88,12 +92,104 @@ class AlbumItem(models.Model):
     def get_photo_url(self):
         return self.media_file.get_photo_url()
 
+    def next_item(self):
+        if self.media_file.date_taken:
+            next_pic_list = AlbumItem.objects.filter(album=self.album).filter(
+                media_file__date_taken__isnull=False).filter(
+                media_file__date_taken__gt=self.media_file.date_taken).order_by('media_file__date_taken',
+                                                                                'file_location')[0:1]
+        else:
+            next_pic_list = AlbumItem.objects.filter(album=self.album).filter(
+                media_file__date_taken__isnull=True).filter(
+                media_file__file_location__gt=self.media_file.file_location).order_by('media_file__date_taken',
+                                                                                      'file_location')[0:1]
+            # No more non-dated pics, let's look for dated pics
+            if len(next_pic_list) == 0:
+                next_pic_list = AlbumItem.objects.filter(album=self.album).filter(
+                    media_file__date_taken__isnull=False).order_by('media_file__date_taken',
+                                                                   'file_location')[0:1]
+
+        return next_pic_list[0] if len(next_pic_list) > 0 else None
+
+    def prev_item(self):
+        if self.media_file.date_taken:
+            prev_pic_list = AlbumItem.objects.filter(album=self.album).filter(
+                media_file__date_taken__isnull=False).filter(
+                media_file__date_taken__lt=self.media_file.date_taken).order_by('-media_file__date_taken',
+                                                                                '-file_location')[0:1]
+            if len(prev_pic_list) == 0:
+                prev_pic_list = AlbumItem.objects.filter(album=self.album).filter(
+                    media_file__date_taken__isnull=True).order_by('-media_file__date_taken',
+                                                                  '-file_location')[0:1]
+        else:
+            prev_pic_list = AlbumItem.objects.filter(album=self.album).filter(
+                media_file__date_taken__isnull=True).filter(
+                media_file__file_location__lt=self.media_file.file_location).order_by('-media_file__date_taken',
+                                                                                      '-file_location')[0:1]
+
+        return prev_pic_list[0] if len(prev_pic_list) > 0 else None
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=128, unique=True, primary_key=True)
 
     def __str__(self):
         return "%s" % (self.name,)
+
+    def next_mediafile(self, mediafile):
+        """
+
+        :param mediafile:
+        :type mediafile: MediaFile
+        :return:
+        """
+        if mediafile.date_taken:
+            next_pic_list = self.mediafiletag_set. \
+                                filter(media_file__date_taken__isnull=False). \
+                                filter(media_file__date_taken__gt=mediafile.date_taken). \
+                                order_by('media_file__date_taken', 'media_file__file_location')[0:1]
+        else:
+            next_pic_list = self.mediafiletag_set. \
+                                filter(media_file__date_taken__isnull=True). \
+                                filter(media_file__file_location__gt=mediafile.file_location). \
+                                order_by('media_file__date_taken', 'media_file__file_location')[0:1]
+            if len(next_pic_list) == 0:
+                # No more non-dated pictures, let's check for dated pictures
+                next_pic_list = self.mediafiletag_set. \
+                                    filter(media_file__date_taken__isnull=False). \
+                                    order_by('media_file__date_taken', 'media_file__file_location')[0:1]
+
+        return next_pic_list[0].media_file if len(next_pic_list) > 0 else None
+
+    def prev_mediafile(self, mediafile):
+        """
+
+        :param mediafile:
+        :type mediafile: MediaFile
+        :return:
+        """
+        if mediafile.date_taken:
+            prev_pic_list = self.mediafiletag_set. \
+                                filter(media_file__date_taken__isnull=False). \
+                                filter(media_file__date_taken__lt=mediafile.date_taken). \
+                                order_by('-media_file__date_taken', '-media_file__file_location')[0:1]
+            if len(prev_pic_list) == 0:
+                # No more dated pictures, let's check for non-dated pictures
+                prev_pic_list = self.mediafiletag_set. \
+                                    filter(media_file__date_taken__isnull=True). \
+                                    order_by('-media_file__date_taken', '-media_file__file_location')[0:1]
+
+        else:
+            prev_pic_list = self.mediafiletag_set. \
+                                filter(media_file__date_taken__isnull=True). \
+                                filter(media_file__file_location__lt=mediafile.file_location). \
+                                order_by('-media_file__date_taken', '-media_file__file_location')[0:1]
+
+        return prev_pic_list[0].media_file if len(prev_pic_list) > 0 else None
+
+    def get_mediafiles(self):
+        return [t.media_file for t in
+         self.mediafiletag_set.order_by('media_file__date_taken', 'media_file__file_location').all()]
 
 
 class MediaFileComment(models.Model):
