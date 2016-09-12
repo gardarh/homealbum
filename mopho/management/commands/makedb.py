@@ -51,7 +51,7 @@ class Command(BaseCommand):
                         im.close()
                         width, height = im.size
                         img_datetime = None
-                        if im.format == 'JPEG':
+                        if hasattr(im, '_getexif'):
                             img_exif = im._getexif()
                             if img_exif:
                                 img_datetimedata = img_exif.get(EXIF_DATETIMEORIGINAL_TAG, None)

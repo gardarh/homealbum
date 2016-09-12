@@ -36,7 +36,7 @@ JPEG_QUALITY = 85
 
 
 def _image_transpose_exif(img):
-    if img.format != 'JPEG':
+    if not hasattr(img, '_getexif'):
         return img
     img_exif = img._getexif()
     if img_exif is None:
@@ -264,7 +264,7 @@ def calculate_thumb_sizes(thumbs_basedir, pic_mediafile):
 def extract_exif_data(photo_src_path):
     img_obj = Image.open(photo_src_path)
     img_data = {}
-    if img_obj.format != 'JPEG':
+    if not hasattr(img_obj, '_getexif'):
         return img_data
     exif_raw = img_obj._getexif()
     if exif_raw:
