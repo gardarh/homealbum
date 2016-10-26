@@ -1,11 +1,19 @@
+import datetime
 import os
+import tempfile
+import zipfile
+from wsgiref.util import FileWrapper
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.http import StreamingHttpResponse
 from django.shortcuts import render
 
 from mopho import img_utils
+from mopho import utils
 from mopho.models import MediaFile, Tag, STARRED_TAGNAME, MediaFileTag, Album, AlbumItem
+
+FILESTREAM_CHUNK_SIZE = 8192
 
 
 def home(request):
@@ -40,6 +48,34 @@ def catalog_by_tag(request, tag_name):
         'album_name': tag_name
     }
     return render(request, 'mopho/album.html', context)
+
+
+def download_photos(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    pics = tag.get_mediafiles()
+    zip_file = tempfile.TemporaryFile('w+b')
+    z = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_STORED)
+    out_filename = '%s-%s.zip' % (tag_name, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+    for pic in pics:
+        photo_abspath = "%s/%s" % (settings.PHOTOS_BASEDIR, pic.get_photo_relpath())
+        picname = os.path.split(photo_abspath)[-1]
+        if pic.date_taken:
+            datestr = pic.date_taken.strftime("%Y-%m-%d-%H-%M-%S")
+        else:
+            datestr = "NODATE"
+
+        arcname = "%s_%s" % (datestr, picname)
+        z.write(photo_abspath, arcname)
+    z.close()
+
+    zip_file.seek(0, utils.SEEK_END)
+    file_size = zip_file.tell()
+    zip_file.seek(0)
+    response = StreamingHttpResponse(FileWrapper(zip_file, FILESTREAM_CHUNK_SIZE),
+                                     content_type='application/zip')
+    response['Content-Length'] = file_size
+    response['Content-Disposition'] = "attachment; filename=%s" % (out_filename,)
+    return response
 
 
 def photo_by_tag(request, tag_name, photo_hash):

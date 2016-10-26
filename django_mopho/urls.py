@@ -24,7 +24,9 @@ urlpatterns = [
     url(r'^albums/(?P<album_name>[\w\d \-_]+)/$', views.catalog_by_album, name='albums'),
     url(r'^photo/album/(?P<album_name>[\w\d \-_]+)/(?P<albumitem_id>[0-9]+)$', views.photo_by_album, name='photo_by_album'),
     url(r'^photo/tag/(?P<tag_name>[\w\d \-_]+)/(?P<photo_hash>[a-f0-9]+)$', views.photo_by_tag, name='photo_by_tag'),
+    url(r'^photo/tag/(?P<tag_name>[\w\d \-_]+)/(?P<photo_hash>[a-f0-9]+)/download$', views.download_photos),
     url(r'^photo/hash/(?P<photo_hash>[a-f0-9]+)$', views.photo_by_hash, name='photo_by_hash'),
     url(r'^tags/$', views.tag_list, name='tags'),
-    url(r'^tags/(?P<tag_name>[\w\d \-_]+)/$', views.catalog_by_tag, name='single_tag')
+    url(r'^tags/(?P<tag_name>[\w\d \-_]+)/$', views.catalog_by_tag, name='single_tag'),
+    url(r'^tags/(?P<tag_name>[\w\d \-_]+)/download/$', views.download_photos)
 ]

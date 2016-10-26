@@ -442,17 +442,16 @@ model</columns>
       <mandatory>1</mandatory>
       <data-type>INTEGER(0,-1)|4</data-type>
     </column>
-    <column id="107" parent="14" name="date_taken">
-      <mandatory>1</mandatory>
-      <data-type>DATETIME(0,-1)|12</data-type>
-    </column>
-    <column id="108" parent="14" name="file_hash">
+    <column id="107" parent="14" name="file_hash">
       <mandatory>1</mandatory>
       <data-type>VARCHAR(32)(0,-1)|12</data-type>
     </column>
-    <column id="109" parent="14" name="file_location">
+    <column id="108" parent="14" name="file_location">
       <mandatory>1</mandatory>
       <data-type>VARCHAR(1024)(0,-1)|12</data-type>
+    </column>
+    <column id="109" parent="14" name="date_taken">
+      <data-type>DATETIME(0,-1)|12</data-type>
     </column>
     <index id="110" parent="14" name="sqlite_autoindex_mopho_mediafile_2">
       <name-surrogate>1</name-surrogate>

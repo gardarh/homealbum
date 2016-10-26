@@ -1,4 +1,4 @@
 pytz
-Django==1.10
+Django==1.10.2
 Pillow==3.3.0
 requests==2.10.0
