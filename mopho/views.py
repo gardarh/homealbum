@@ -26,7 +26,8 @@ def catalog_by_album(request, album_name):
     pics = [
         {
             'link_url': p.media_file.get_photopage_url(album_item=p),
-            'thumb_url': p.media_file.get_thumb_url()
+            'thumb_url': p.media_file.get_thumb_url(),
+            'file_hash': p.media_file.file_hash
         } for p in cur_album.get_album_items()]
     context = {
         'pics': pics,
@@ -43,7 +44,8 @@ def catalog_by_tag(request, tag_name):
         'pics': [
             {
                 'link_url': pic.get_photopage_url(tag=tag),
-                'thumb_url': pic.get_thumb_url()
+                'thumb_url': pic.get_thumb_url(),
+                'file_hash': pic.file_hash
             } for pic in pics],
         'album_name': tag_name
     }
@@ -81,7 +83,6 @@ def download_photos(request, tag_name):
 def photo_by_tag(request, tag_name, photo_hash):
     tag = Tag.objects.get(name=tag_name)
     pic_mediafile = tag.mediafiletag_set.get(media_file__file_hash=photo_hash).media_file  # type: MediaFile
-    up_url = "/tags/%s" % (tag_name,)
 
     thumb_info = img_utils.calculate_thumb_sizes(settings.PHOTOS_THUMBS_BASEDIR, pic_mediafile)
     photo_src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, pic_mediafile.get_photo_relpath())
@@ -90,22 +91,21 @@ def photo_by_tag(request, tag_name, photo_hash):
 
     is_starred = STARRED_TAGNAME in tags
 
+    next_pic = tag.next_mediafile(pic_mediafile)
+    prev_pic = tag.prev_mediafile(pic_mediafile)
+
+    up_url = "/tags/%s#%s" % (tag_name,pic_mediafile.file_hash)
+
     if request.method == 'POST':
         star_tag = Tag.objects.get(name=STARRED_TAGNAME)
-        if len(request.POST.get('star', '')) > 0:
-            mft = MediaFileTag(media_file=pic_mediafile, tag=star_tag)
-            mft.save()
-        elif len(request.POST.get('unstar', '')) > 0:
+        if len(request.POST.get('unstar', '')) > 0:
             try:
                 mft = MediaFileTag.objects.get(media_file=pic_mediafile, tag=star_tag)
                 mft.delete()
             except MediaFileTag.DoesNotExist:
                 pass
         # TODO: Notify user about starring/unstarring with a disappearing message
-        return HttpResponseRedirect(up_url)
-
-    next_pic = tag.next_mediafile(pic_mediafile)
-    prev_pic = tag.prev_mediafile(pic_mediafile)
+        return HttpResponseRedirect(next_pic.get_photopage_url(tag=tag) if next_pic else up_url)
 
     context = {
         'thumb_infos': thumb_info,
@@ -130,7 +130,7 @@ def photo_by_hash(request, photo_hash):
 def photo_by_album(request, album_name, albumitem_id):
     album_item = AlbumItem.objects.get(id=albumitem_id)
     pic_mediafile = album_item.media_file
-    up_url = "/albums/%s" % (album_name,)
+    up_url = "/albums/%s#%s" % (album_name, pic_mediafile.file_hash)
 
     thumb_info = img_utils.calculate_thumb_sizes(settings.PHOTOS_THUMBS_BASEDIR, pic_mediafile)
     photo_src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, pic_mediafile.get_photo_relpath())
