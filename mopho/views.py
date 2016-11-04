@@ -98,7 +98,7 @@ def photo_by_tag(request, tag_name, photo_hash):
 
     if request.method == 'POST':
         star_tag = Tag.objects.get(name=STARRED_TAGNAME)
-        if len(request.POST.get('unstar', '')) > 0:
+        if len(request.POST.get('unstar.x', '')) > 0:
             try:
                 mft = MediaFileTag.objects.get(media_file=pic_mediafile, tag=star_tag)
                 mft.delete()
@@ -141,10 +141,10 @@ def photo_by_album(request, album_name, albumitem_id):
 
     if request.method == 'POST':
         star_tag = Tag.objects.get(name=STARRED_TAGNAME)
-        if len(request.POST.get('star', '')) > 0:
+        if len(request.POST.get('star.x', '')) > 0:
             mft = MediaFileTag(media_file=pic_mediafile, tag=star_tag)
             mft.save()
-        elif len(request.POST.get('unstar', '')) > 0:
+        elif len(request.POST.get('unstar.x', '')) > 0:
             try:
                 mft = MediaFileTag.objects.get(media_file=pic_mediafile, tag=star_tag)
                 mft.delete()

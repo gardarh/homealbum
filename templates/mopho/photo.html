@@ -3,6 +3,7 @@
 
 {% block head %}
     {{  block.super }}
+    <script src="{% static 'mopho/hammer.min.js' %}"></script>
     <script>
 document.onkeydown = function(e) {
     var goto_url = null;
@@ -22,6 +23,24 @@ document.onkeydown = function(e) {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 };
+
+var hammertime = new Hammer(document, {});
+hammertime.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
+hammertime.on('swipeleft', handleSwipeLeft);
+hammertime.on('swiperight', handleSwipeRight);
+function handleSwipeLeft(ev) {
+    var next_img_obj = document.getElementById('a_nextimg');
+    if (next_img_obj != null) {
+        next_img_obj.click();
+    }
+}
+function handleSwipeRight(ev) {
+    prev_img_obj = document.getElementById('a_previmg');
+    if (prev_img_obj != null) {
+        prev_img_obj.click();
+    }
+}
+
     </script>
     <style type="text/css">
         {% for thumb_info in thumb_infos %}
@@ -44,12 +63,13 @@ document.onkeydown = function(e) {
         {% if prev_pic_url %}<a href="{{ prev_pic_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
         {% if next_pic_url %}<a href="{{ next_pic_url }}" id="a_nextimg">next</a>{% endif %}
     tags: [{% for tag in tags %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}]
-        <form method="POST" action="">
+
+        <form method="POST" action="" style="text-align:right;">
             {%  csrf_token %}
             {% if is_starred %}
-            <input type="submit" name="unstar" value="Unstar" />
+            <input type="image" name="unstar" src="{% static 'mopho/img/star_filled.png' %}" alt="Unstar" />
             {% else %}
-            <input type="submit" name="star" value="Star" />
+            <input type="image" name="star" src="{% static 'mopho/img/star_empty.png' %}" alt="Unstar" />
             {% endif %}
         </form>
     </div>
