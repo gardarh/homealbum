@@ -52,12 +52,21 @@ def catalog_by_tag(request, tag_name):
     return render(request, 'mopho/album.html', context)
 
 
-def download_photos(request, tag_name):
-    tag = Tag.objects.get(name=tag_name)
-    pics = tag.get_mediafiles()
+def download_photos(request, tag_name=None, album_name=None):
+    if album_name:
+        cur_album = Album.objects.get(name=album_name)
+        zipfile_label = cur_album.name
+        pics = [ai.media_file for ai in cur_album.get_album_items()]
+    elif tag_name:
+        tag = Tag.objects.get(name=tag_name)
+        pics = tag.get_mediafiles()
+        zipfile_label = tag.name
+    else:
+        raise ValueError("Need album name or tag name")
+
     zip_file = tempfile.TemporaryFile('w+b')
     z = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_STORED)
-    out_filename = '%s-%s.zip' % (tag_name, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+    out_filename = '%s-%s.zip' % (zipfile_label, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
     for pic in pics:
         photo_abspath = "%s/%s" % (settings.PHOTOS_BASEDIR, pic.get_photo_relpath())
         picname = os.path.split(photo_abspath)[-1]
