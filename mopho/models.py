@@ -28,7 +28,7 @@ class MediaFile(models.Model):
         return "%s" % (self.file_location,)
 
     def get_thumb_url(self, thumb_width=img_utils.LISTTHUMB_SIZE[0]):
-        return "thumbs/%s" % (img_utils.get_thumb_relpath(self.file_hash, thumb_width),)
+        return "/thumbs/%s" % (img_utils.get_thumb_relpath(self.file_hash, thumb_width),)
 
     def get_thumb_relpath(self, width):
         return img_utils.get_thumb_relpath(self.file_hash, width)
@@ -50,7 +50,7 @@ class MediaFile(models.Model):
             return "/photo/hash/%s" % (self.file_hash,)
 
     def get_photo_url(self):
-        return "photos/%s" % (self.file_location,)
+        return "/originals/%s" % (self.file_location,)
 
     def get_photo_relpath(self):
         return self.file_location

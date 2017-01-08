@@ -119,8 +119,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-PHOTOS_BASEDIR = "/dev/null"
-
 try:
     from django_mopho.local_settings import *
     # There should be a local_settings.py file in the same dir as settings.py
@@ -131,6 +129,4 @@ try:
 
 except ImportError:
     print("Could not import local settings")
-
-STATICFILES_DIRS.append(PHOTOS_STATICDIR)
 

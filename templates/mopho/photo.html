@@ -48,7 +48,7 @@ function handleSwipeRight(ev) {
                 {% if thumb_info.minwidth and thumb_info.maxwidth %}and{% endif %}
                 {%  if thumb_info.maxwidth %}(max-width: {{ thumb_info.maxwidth }}px){% endif %} {
                 #photo {
-                    content: url("{% static thumb_info.url %}");
+                    content: url("{{ thumb_info.url }}");
                 }
             }
         {% endfor %}
@@ -59,7 +59,7 @@ function handleSwipeRight(ev) {
 {% block title %}{{ album_name }}: {{ photo_name }}{% endblock %}
 
 {% block content %}
-    <div><a href="{% static src_pic_url %}">src</a> -
+    <div><a href="{{ src_pic_url }}">src</a> -
         {% if prev_pic_url %}<a href="{{ prev_pic_url }}" id="a_previmg">prev</a> - {% endif %}<a href="{{ up_url }}">up</a> -
         {% if next_pic_url %}<a href="{{ next_pic_url }}" id="a_nextimg">next</a>{% endif %}
     tags: [{% for tag in tags %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}]
@@ -74,7 +74,7 @@ function handleSwipeRight(ev) {
         </form>
     </div>
 
-    <div class="img"><img id="photo" /><!--<img src="{% static photo_url %}"  />--></div>
+    <div class="img"><img id="photo" /><!--<img src="{{ photo_url }}"  />--></div>
     <div>
     {% if img_exif_data.make %}Camera: {{  img_exif_data.make }} {{ img_exif_data.model }} - {% endif %}
     {% if img_exif_data.iso %}ISO: {{  img_exif_data.iso }} - {% endif %}
