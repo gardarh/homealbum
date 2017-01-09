@@ -19,10 +19,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0q=b4po2gb9yol#^@x(%@pkswk322r!)3=8lpn8ftj0*0p+*yb'
+# Put this in local_settings.py
+# Generate key with
+# SECRET_KEY = ''.join([random.SystemRandom().choice((string.ascii_letters + string.digits + string.punctuation).replace("'",'')) for i in range(50)])
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -110,9 +113,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+LOGIN_URL = "/admin/login/"
 
+# Static files (CSS, JavaScript, Images - NOTE: not application photos/thumbs, just icons, etc.)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -126,6 +130,9 @@ try:
     # PHOTOS_STATICDIR = "/home/foo/static" # the staticdir, this dir could contain symlinks to "photos" and "thumbs"
     # PHOTOS_BASEDIR = "/home/foo/photos" # source photos dir
     # PHOTOS_THUMBS_BASEDIR = "/home/foo/thumbs" # thumbs dir (only generated files will be here)
+    # SECRET_KEY = 'xxx' # see above how to generate
+    # DEBUG = False
+
 
 except ImportError:
     print("Could not import local settings")

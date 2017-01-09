@@ -5,6 +5,7 @@ import zipfile
 from wsgiref.util import FileWrapper
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.http import StreamingHttpResponse
 from django.shortcuts import render
@@ -15,12 +16,13 @@ from mopho.models import MediaFile, Tag, STARRED_TAGNAME, MediaFileTag, Album, A
 
 FILESTREAM_CHUNK_SIZE = 8192
 
-
+@login_required
 def home(request):
     context = {'albums': Album.objects.all().order_by('-latest_date')}
     return render(request, 'mopho/index.html', context)
 
 
+@login_required
 def catalog_by_album(request, album_name):
     cur_album = Album.objects.get(name=album_name)
     pics = [
@@ -36,6 +38,7 @@ def catalog_by_album(request, album_name):
     return render(request, 'mopho/album.html', context)
 
 
+@login_required
 def catalog_by_tag(request, tag_name):
     tag = Tag.objects.get(name=tag_name)
     pics = tag.get_mediafiles()
@@ -52,6 +55,7 @@ def catalog_by_tag(request, tag_name):
     return render(request, 'mopho/album.html', context)
 
 
+@login_required
 def download_photos(request, tag_name=None, album_name=None):
     if album_name:
         cur_album = Album.objects.get(name=album_name)
@@ -89,6 +93,7 @@ def download_photos(request, tag_name=None, album_name=None):
     return response
 
 
+@login_required
 def photo_by_tag(request, tag_name, photo_hash):
     tag = Tag.objects.get(name=tag_name)
     pic_mediafile = tag.mediafiletag_set.get(media_file__file_hash=photo_hash).media_file  # type: MediaFile
@@ -132,10 +137,12 @@ def photo_by_tag(request, tag_name, photo_hash):
     return render(request, 'mopho/photo.html', context)
 
 
+@login_required
 def photo_by_hash(request, photo_hash):
     pass
 
 
+@login_required
 def photo_by_album(request, album_name, albumitem_id):
     album_item = AlbumItem.objects.get(id=albumitem_id)
     pic_mediafile = album_item.media_file
@@ -181,6 +188,7 @@ def photo_by_album(request, album_name, albumitem_id):
     return render(request, 'mopho/photo.html', context)
 
 
+@login_required
 def tag_list(request):
     tags = Tag.objects.all()
     context = {
