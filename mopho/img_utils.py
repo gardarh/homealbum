@@ -160,7 +160,8 @@ def get_photo_relpath(album_name, filename):
 
 def get_photo_list(photos_basedir, album_name):
     album_dir = "%s/%s" % (photos_basedir, album_name)
-    return [it for it in sorted(os.listdir(album_dir)) if
+    # Reverse means that if album names start with year, the newest are processed first
+    return [it for it in sorted(os.listdir(album_dir), reverse=True) if
             os.path.isfile("%s/%s" % (album_dir, it)) and
             not it.startswith(".")]  # exclude dotfiles
 
