@@ -71,7 +71,7 @@ def generate_thumbnail(src_fn, dest_fn, max_width, max_height):
         im.thumbnail((max_width, max_height))
         im.save(dest_fn, 'JPEG', quality=JPEG_QUALITY)
         return True
-    except OSError as oe:
+    except (OSError, IOError) as oe:
         _logger.error("Could not generate thumb for %s, err: %s", src_fn, str(oe))
         return False
 
