@@ -118,7 +118,8 @@ def generate_photo_thumbnails(thumbs_basedir, src_photo_abs_path):
         f.close()
         out_fn = "%s/%s" % (thumbs_basedir, get_thumb_relpath(photo_hash, res[0]))
         out_fn_dir = os.path.split(out_fn)[0]
-        os.makedirs(out_fn_dir, exist_ok=True)
+        if not os.path.exists(out_fn_dir):
+            os.makedirs(out_fn_dir)
 
         if not os.path.isfile(out_fn):
             generate_thumbnail(src_photo_abs_path, out_fn, res[0], res[1])

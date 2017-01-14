@@ -132,6 +132,7 @@ try:
     # PHOTOS_THUMBS_BASEDIR = "/home/foo/thumbs" # thumbs dir (only generated files will be here)
     # SECRET_KEY = 'xxx' # see above how to generate
     # DEBUG = False
+    # ALLOWED_HOSTS = [...]
 
 
 except ImportError:
