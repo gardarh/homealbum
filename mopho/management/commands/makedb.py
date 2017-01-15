@@ -1,20 +1,21 @@
 import logging
 import os
-import sys
 
+import django.db
 import pytz
+from PIL import Image
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from mopho import img_utils
 from mopho import models
 from mopho.models import MediaFile, Tag, STARRED_TAGNAME, Album, AlbumItem
-from PIL import Image
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.DEBUG)
 
 EXIF_DATETIMEORIGINAL_TAG = 36867
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -22,10 +23,10 @@ class Command(BaseCommand):
             t = Tag(name=STARRED_TAGNAME)
             t.save()
 
-        album_name = options['album_name'][0] if options['album_name'] else None
+        arg_album_name = options['album_name'][0] if options['album_name'] else None
 
-        if album_name is not None:
-            album_list = [album_name]
+        if arg_album_name is not None:
+            album_list = [arg_album_name]
         else:
             album_list = img_utils.get_album_list(settings.PHOTOS_BASEDIR)
 
@@ -46,26 +47,59 @@ class Command(BaseCommand):
                     photo_f.seek(0)
                     try:
                         mf = MediaFile.objects.get(file_hash=hashsum)
+                        if mf.file_location != photo_relpath:
+                            mf.file_location = photo_relpath
+                            mf.save()
                     except MediaFile.DoesNotExist:
-                        im = Image.open(photo_f)
-                        im.close()
-                        width, height = im.size
-                        img_datetime = None
-                        if hasattr(im, '_getexif'):
-                            img_exif = im._getexif()
-                            if img_exif:
-                                img_datetimedata = img_exif.get(EXIF_DATETIMEORIGINAL_TAG, None)
-                                try:
-                                    img_datetime = img_utils.parse_exif_date(img_datetimedata) if img_datetimedata else None
-                                    if img_datetime:
-                                        img_datetime = img_datetime.replace(tzinfo=pytz.UTC)
-                                except ValueError as v:
-                                    _logger.warn("Could not process date for %s, err: %s", photo_abspath, str(v))
+                        try:
+                            im = Image.open(photo_f)
+                            im.close()
+                            width, height = im.size
+                            img_datetime = None
+                            if hasattr(im, '_getexif'):
+                                # noinspection PyProtectedMember
+                                img_exif = im._getexif()
+                                if img_exif:
+                                    img_datetimedata = img_exif.get(EXIF_DATETIMEORIGINAL_TAG, None)
+                                    try:
+                                        img_datetime = img_utils.parse_exif_date(
+                                            img_datetimedata) if img_datetimedata else None
+                                        if img_datetime:
+                                            img_datetime = img_datetime.replace(tzinfo=pytz.UTC)
+                                    except ValueError as v:
+                                        _logger.warning("Could not process date for %s, err: %s", photo_abspath, str(v))
 
+                            mf = MediaFile(file_hash=hashsum, mediatype=models.MEDIATYPE_PHOTO,
+                                           file_location=photo_relpath,
+                                           width=width, height=height, date_taken=img_datetime)
+                            try:
+                                mf.save()
+                            except django.db.utils.IntegrityError:
+                                # Most probably file was modified, just update old record to preserve
+                                # tags and comments
+                                mf_old = MediaFile.objects.get(file_location=photo_relpath)
+                                if MediaFile.objects.filter(file_location="DEL").exists():
+                                    # This shouldn't exist but if we don't do this check a
+                                    # uncleanly stopped previous job would break the makedb
+                                    # command permanently
+                                    MediaFile.objects.get(file_location="DEL").delete()
+                                # Do this since file_location needs to be unique
+                                mf_old.file_location = str("DEL")
+                                mf_old.save()
+                                mf.save()
+                                mf_old.transfer_relations_to_other(mf)
+                                mf_old.delete()
 
-                        mf = MediaFile(file_hash=hashsum, mediatype=models.MEDIATYPE_PHOTO, file_location=photo_relpath,
-                                       width=width, height=height, date_taken=img_datetime)
-                        mf.save()
+                        except OSError:
+                            # this is not an image file, check for video
+                            if os.path.splitext(photo_abspath)[-1] == ".MP4":
+                                _logger.info("FOUND VIDEO")
+                                mf = MediaFile(file_hash=hashsum, mediatype=models.MEDIATYPE_VIDEO,
+                                               file_location=photo_relpath, width=0, height=0)
+                                mf.save()
+                            else:
+                                raise IOError("")
+
                     photo_f.close()
                     try:
                         album_item = AlbumItem.objects.get(file_location=photo_relpath)
@@ -76,19 +110,31 @@ class Command(BaseCommand):
                     album_item.save()
 
                 except IOError:
-                    _logger.warn("Could not process file: %s", photo_abspath)
+                    _logger.warning("Could not process file: %s", photo_abspath)
             album.gen_album_dates()
             album.save()
 
+        if arg_album_name is None:
+            # Delete albums where underlying folder is missing
+            # Nothing should be linked to Album or AlbumItem so we should just be deleting
+            # generated data
+            for album in Album.objects.all():
+                if album.name not in album_list:
+                    print("Deleting album %s" % (album.name,))
+                    album.delete()
 
-            # img_utils.generate_album_thumbnails(
-            #     settings.PHOTOS_BASEDIR,
-            #     settings.PHOTOS_THUMBS_BASEDIR,
-            #     album_name,
-            #     single_photo_name=photo_name
-            #
-            # )
+            all_files = set()
+            for album_name in album_list:
+                all_files.update([os.path.join(album_name, file_name) for file_name
+                                  in os.listdir(os.path.join(settings.PHOTOS_BASEDIR, album_name))])
 
+            # Delete albums where underlying folder is missing. Note that comments, tags
+            # and AlbumItems are linked to mediafiles and will be removed but since the
+            # file does not exist anymore it should be ok
+            for mf in MediaFile.objects.all():
+                if mf.file_location not in all_files:
+                    print("Removing file %s from database" % (mf.file_location,))
+                    mf.delete()
 
     def add_arguments(self, parser):
         # Positional arguments

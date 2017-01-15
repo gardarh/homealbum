@@ -264,7 +264,10 @@ def calculate_thumb_sizes(thumbs_basedir, pic_mediafile):
 
 
 def extract_exif_data(photo_src_path):
-    img_obj = Image.open(photo_src_path)
+    try:
+        img_obj = Image.open(photo_src_path)
+    except (OSError, IOError):
+        return None
     img_data = {}
     if not hasattr(img_obj, '_getexif'):
         return img_data

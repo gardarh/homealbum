@@ -55,6 +55,19 @@ class MediaFile(models.Model):
     def get_photo_relpath(self):
         return self.file_location
 
+    def transfer_relations_to_other(self, other):
+        # Generally happens when a photo has been modified and we need to create a new mediafile
+        # Move all AlbumItem, MediaFileComment and MediaFileTag object to new object
+        for ai in self.albumitem_set.all():
+            ai.media_file = other
+            ai.save()
+        for mfc in self.mediafilecomment_set.all():
+            mfc.media_file = other
+            mfc.save()
+        for mft in self.mediafiletag_set.all():
+            mft.media_file = other
+            mft.save()
+
 
 class Album(models.Model):
     name = models.CharField(max_length=1024, null=False, unique=True, db_index=True)
@@ -72,6 +85,9 @@ class Album(models.Model):
 
     def get_album_items(self):
         return self.albumitem_set.all().order_by('media_file__date_taken', 'file_location')
+
+    def __str__(self):
+        return "Album: %s (id: %d)" % (self.name, self.id)
 
 
 class AlbumItem(models.Model):
