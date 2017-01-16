@@ -83,7 +83,7 @@ def generate_album_thumbnails(pool, photos_basedir, thumbs_basedir, album_name, 
     else:
         pics = get_photo_list(photos_basedir, album_name)
 
-    abs_pics = ["%s/%s" % (photos_basedir, get_photo_relpath(album_name, picname)) for picname in pics]
+    abs_pics = [get_photo_filesystem_path(photos_basedir, album_name, picname) for picname in pics]
 
     if debug:
         _logger.error("NOTE: This is a testing code, should only be used for debugging purposes")
@@ -116,7 +116,7 @@ def generate_photo_thumbnails(thumbs_basedir, src_photo_abs_path):
         f = open(src_photo_abs_path, 'rb')
         photo_hash = calc_mediafile_hash(f)
         f.close()
-        out_fn = "%s/%s" % (thumbs_basedir, get_thumb_relpath(photo_hash, res[0]))
+        out_fn = get_thumb_filesystem_path(thumbs_basedir, photo_hash, res[0])
         out_fn_dir = os.path.split(out_fn)[0]
         if not os.path.exists(out_fn_dir):
             os.makedirs(out_fn_dir)
@@ -127,12 +127,12 @@ def generate_photo_thumbnails(thumbs_basedir, src_photo_abs_path):
 
 def remove_thumbnails(thumbs_basedir, photo_hash):
     for res in RESOLUTIONS:
-        rm_fn = "%s/%s" % (thumbs_basedir, get_thumb_relpath(photo_hash, res[0]))
+        rm_fn = get_thumb_filesystem_path(thumbs_basedir, photo_hash, res[0])
         if os.path.isfile(rm_fn):
             os.remove(rm_fn)
 
 
-def get_thumb_relpath(photo_hash, width):
+def get_thumb_rel_url(photo_hash, width):
     """
     The thumb relative path is comprised as follows:
     photo_hash[0:2]/photo_hash-width.jpg
@@ -145,10 +145,32 @@ def get_thumb_relpath(photo_hash, width):
     """
     if width not in RES_DICT:
         raise ValueError("Width %d not defined" % (width,))
-    return "%s/%s-%d.jpg" % (photo_hash[0:2], photo_hash, width)
+    return "%s/%s" % (photo_hash[0:2], "%s-%d.jpg" % (photo_hash, width))
 
 
-def get_photo_relpath(album_name, filename):
+def get_thumb_filesystem_path(thumbs_basedir, photo_hash, width):
+    """
+    Get location of thumb on filesystem, e.g.
+    /some/dir/photo_hash[0:2]/photo_hash-width.jpg
+
+    :param thumbs_basedir: The settings.PHOTOS_THUMBS_BASEDIR
+    :type thumbs_basedir: str
+    :param photo_hash:
+    :type photo_hash: str
+    :param width:
+    :type width: int
+    :return:
+    """
+    return os.path.join(thumbs_basedir, get_thumb_filesystem_relpath(photo_hash, width))
+
+
+def get_thumb_filesystem_relpath(photo_hash, width):
+    if width not in RES_DICT:
+        raise ValueError("Width %d not defined" % (width,))
+    return os.path.join(photo_hash[0:2], "%s-%d.jpg" % (photo_hash, width))
+
+
+def get_photo_rel_url(album_name, filename):
     """
     Gets path of source photo relative to photos basedir
     :param album_name:
@@ -158,11 +180,33 @@ def get_photo_relpath(album_name, filename):
     return "%s/%s" % (album_name, filename)
 
 
+def get_photo_filesystem_path(photos_basedir, album_name, filename):
+    """
+    Gets location of photo on filesystem, e.g.:
+    /some/dir/album/photo.jpg
+    :param album_name:
+    :param filename:
+    :return:
+    """
+    return os.path.join(photos_basedir, get_photo_filesystem_relpath(album_name, filename))
+
+
+def get_photo_filesystem_relpath(album_name, filename):
+    """
+    Gets relative location of photo on filesystem, e.g.:
+    album/photo.jpg
+    :param album_name:
+    :param filename:
+    :return:
+    """
+    return os.path.join(album_name, filename)
+
+
 def get_photo_list(photos_basedir, album_name):
-    album_dir = "%s/%s" % (photos_basedir, album_name)
+    album_dir = os.path.join(photos_basedir, album_name)
     # Reverse means that if album names start with year, the newest are processed first
     return [it for it in sorted(os.listdir(album_dir), reverse=True) if
-            os.path.isfile("%s/%s" % (album_dir, it)) and
+            os.path.isfile(os.path.join(album_dir, it)) and
             not it.startswith(".")]  # exclude dotfiles
 
 
@@ -178,7 +222,7 @@ def calc_mediafile_hash(fd):
     return _hash_file(fd, hashlib.sha512, HASH_NUMBYTES).hexdigest()[:32]
 
 
-def _hash_file(fd, hash_func, num_bytes = -1):
+def _hash_file(fd, hash_func, num_bytes=-1):
     """
 
     :param fd: A file like object to calculate sha256 sum from
@@ -208,7 +252,7 @@ def get_album_list(photos_basedir):
     :return:
     """
     return [d for d in sorted(os.listdir(photos_basedir), reverse=True) if
-            not d.startswith('.') and os.path.isdir("%s/%s" % (photos_basedir, d))]
+            not d.startswith('.') and os.path.isdir(os.path.join(photos_basedir, d))]
 
 
 def parse_exif_date(img_datetimedata):
@@ -236,16 +280,13 @@ def calculate_thumb_sizes(thumbs_basedir, pic_mediafile):
     # Calculate different thumb sizes
     photo_urls = []
     for i in range(len(RESOLUTIONS)):
-        thumb_relpath = pic_mediafile.get_thumb_relpath(RESOLUTIONS[i][0])
-        thumb_abspath = "%s/%s" % (thumbs_basedir, thumb_relpath)
+        thumb_abspath = pic_mediafile.get_thumb_filesystem_path(thumbs_basedir, RESOLUTIONS[i][0])
         thumb_url = pic_mediafile.get_thumb_url(RESOLUTIONS[i][0])
         if not os.path.isfile(thumb_abspath):
             continue
         next_thumb_width = 0
         if i + 1 < len(RESOLUTIONS):
-            larger_thumb_path = "%s/%s" % (
-                thumbs_basedir,
-                pic_mediafile.get_thumb_relpath(RESOLUTIONS[i + 1][0]))
+            larger_thumb_path = pic_mediafile.get_thumb_filesystem_path(thumbs_basedir, RESOLUTIONS[i + 1][0])
             if not os.path.isfile(larger_thumb_path):
                 continue
             with open(larger_thumb_path, 'rb') as f_next:

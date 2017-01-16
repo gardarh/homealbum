@@ -16,6 +16,7 @@ from mopho.models import MediaFile, Tag, STARRED_TAGNAME, MediaFileTag, Album, A
 
 FILESTREAM_CHUNK_SIZE = 8192
 
+
 @login_required
 def home(request):
     context = {'albums': Album.objects.all().order_by('-latest_date')}
@@ -72,7 +73,7 @@ def download_photos(request, tag_name=None, album_name=None):
     z = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_STORED)
     out_filename = '%s-%s.zip' % (zipfile_label, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
     for pic in pics:
-        photo_abspath = "%s/%s" % (settings.PHOTOS_BASEDIR, pic.get_photo_relpath())
+        photo_abspath = os.path.join(settings.PHOTOS_BASEDIR, pic.get_photo_relpath())
         picname = os.path.split(photo_abspath)[-1]
         if pic.date_taken:
             datestr = pic.date_taken.strftime("%Y-%m-%d-%H-%M-%S")
@@ -99,7 +100,7 @@ def photo_by_tag(request, tag_name, photo_hash):
     pic_mediafile = tag.mediafiletag_set.get(media_file__file_hash=photo_hash).media_file  # type: MediaFile
 
     thumb_info = img_utils.calculate_thumb_sizes(settings.PHOTOS_THUMBS_BASEDIR, pic_mediafile)
-    photo_src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, pic_mediafile.get_photo_relpath())
+    photo_src_path = os.path.join(settings.PHOTOS_BASEDIR, pic_mediafile.get_photo_relpath())
     img_exif_data = img_utils.extract_exif_data(photo_src_path)
     tags = [t.tag.name for t in pic_mediafile.mediafiletag_set.all()]
 
@@ -108,7 +109,7 @@ def photo_by_tag(request, tag_name, photo_hash):
     next_pic = tag.next_mediafile(pic_mediafile)
     prev_pic = tag.prev_mediafile(pic_mediafile)
 
-    up_url = "/tags/%s#%s" % (tag_name,pic_mediafile.file_hash)
+    up_url = "/tags/%s#%s" % (tag_name, pic_mediafile.file_hash)
 
     if request.method == 'POST':
         star_tag = Tag.objects.get(name=STARRED_TAGNAME)
@@ -149,7 +150,7 @@ def photo_by_album(request, album_name, albumitem_id):
     up_url = "/albums/%s#%s" % (album_name, pic_mediafile.file_hash)
 
     thumb_info = img_utils.calculate_thumb_sizes(settings.PHOTOS_THUMBS_BASEDIR, pic_mediafile)
-    photo_src_path = "%s/%s" % (settings.PHOTOS_BASEDIR, pic_mediafile.get_photo_relpath())
+    photo_src_path = os.path.join(settings.PHOTOS_BASEDIR, pic_mediafile.get_photo_relpath())
     img_exif_data = img_utils.extract_exif_data(photo_src_path)
     tags = [t.tag.name for t in pic_mediafile.mediafiletag_set.all()]
 

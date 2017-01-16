@@ -1,4 +1,5 @@
 import multiprocessing
+import os
 import sys
 
 from django.conf import settings
@@ -27,7 +28,7 @@ class Command(BaseCommand):
             if photo_name:
                 print("Generating thumbnail in album %s for single photo in %s: " % (album_name,photo_name))
                 print("Removing old thumbnails...")
-                photo_absname = "%s/%s/%s" % (settings.PHOTOS_BASEDIR, album_name, photo_name)
+                photo_absname = os.path.join(settings.PHOTOS_BASEDIR, album_name, photo_name)
                 photo_fd = open(photo_absname, 'rb')
                 photo_hash = img_utils.calc_mediafile_hash(photo_fd)
                 photo_fd.close()

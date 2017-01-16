@@ -39,8 +39,8 @@ class Command(BaseCommand):
                 album.save()
 
             for photo in img_utils.get_photo_list(settings.PHOTOS_BASEDIR, album_name):
-                photo_relpath = img_utils.get_photo_relpath(album_name, photo)
-                photo_abspath = "%s/%s" % (settings.PHOTOS_BASEDIR, photo_relpath)
+                photo_relpath = img_utils.get_photo_filesystem_relpath(album_name, photo)
+                photo_abspath = img_utils.get_photo_filesystem_path(settings.PHOTOS_BASEDIR, album_name, photo)
                 try:
                     photo_f = open(photo_abspath, 'rb')
                     hashsum = img_utils.calc_mediafile_hash(photo_f)
@@ -92,7 +92,8 @@ class Command(BaseCommand):
 
                         except OSError:
                             # this is not an image file, check for video
-                            if os.path.splitext(photo_abspath)[-1] == ".MP4":
+                            # TODO: work in progress
+                            if os.path.splitext(photo_relpath)[-1] == ".MP4":
                                 _logger.info("FOUND VIDEO")
                                 mf = MediaFile(file_hash=hashsum, mediatype=models.MEDIATYPE_VIDEO,
                                                file_location=photo_relpath, width=0, height=0)
@@ -125,8 +126,8 @@ class Command(BaseCommand):
 
             all_files = set()
             for album_name in album_list:
-                all_files.update([os.path.join(album_name, file_name) for file_name
-                                  in os.listdir(os.path.join(settings.PHOTOS_BASEDIR, album_name))])
+                photo_dir = os.path.join(settings.PHOTOS_BASEDIR, album_name)
+                all_files.update([os.path.join(album_name, file_name) for file_name in os.listdir(photo_dir)])
 
             # Delete albums where underlying folder is missing. Note that comments, tags
             # and AlbumItems are linked to mediafiles and will be removed but since the

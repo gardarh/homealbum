@@ -1,5 +1,5 @@
 tornado==4.4.2
-pytz
-Django==1.10.2
-Pillow==3.3.0
-requests==2.10.0
+pytz==2016.10
+Django==1.10.5
+Pillow==4.0.0
+requests==2.12.4

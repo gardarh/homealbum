@@ -12,6 +12,7 @@ from PIL import Image
 
 EXIF_DATETIMEORIGINAL_TAG = 36867
 
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         album_name = options['album_name'][0] if options['album_name'] else None
@@ -21,8 +22,7 @@ class Command(BaseCommand):
             for album_name in album_list:
                 print("Deleting db items from album %s: " % (album_name,))
                 for photo in img_utils.get_photo_list(settings.PHOTOS_BASEDIR, album_name):
-                    photo_relpath = img_utils.get_photo_relpath(album_name, photo)
-                    photo_abspath = "%s/%s" % (settings.PHOTOS_BASEDIR, photo_relpath)
+                    photo_abspath = img_utils.get_photo_filesystem_path(settings.PHOTOS_BASEDIR, album_name, photo)
                     try:
                         photo_f = open(photo_abspath, 'rb')
                         hashsum = img_utils.calc_mediafile_hash(photo_f)
@@ -36,8 +36,6 @@ class Command(BaseCommand):
         else:
             print("Deleting all records from photo db (NOTE: all records can be regenerated via gen_photodb)")
             MediaFile.objects.all().delete()
-
-
 
     def add_arguments(self, parser):
         # Positional arguments

@@ -28,10 +28,10 @@ class MediaFile(models.Model):
         return "%s" % (self.file_location,)
 
     def get_thumb_url(self, thumb_width=img_utils.LISTTHUMB_SIZE[0]):
-        return "/thumbs/%s" % (img_utils.get_thumb_relpath(self.file_hash, thumb_width),)
+        return "/thumbs/%s" % (img_utils.get_thumb_rel_url(self.file_hash, thumb_width),)
 
-    def get_thumb_relpath(self, width):
-        return img_utils.get_thumb_relpath(self.file_hash, width)
+    def get_thumb_filesystem_path(self, basedir, width):
+        return img_utils.get_thumb_filesystem_path(basedir, self.file_hash, width)
 
     def get_photopage_url(self, album_item=None, tag=None):
         """
@@ -45,7 +45,7 @@ class MediaFile(models.Model):
         if album_item:
             return "/photo/album/%s/%s" % (album_item.album.name, album_item.id)
         elif tag:
-            return "/photo/tag/%s" % (img_utils.get_photo_relpath(tag.name, self.file_hash),)
+            return "/photo/tag/%s" % (img_utils.get_photo_rel_url(tag.name, self.file_hash),)
         else:
             return "/photo/hash/%s" % (self.file_hash,)
 
@@ -205,7 +205,7 @@ class Tag(models.Model):
 
     def get_mediafiles(self):
         return [t.media_file for t in
-         self.mediafiletag_set.order_by('media_file__date_taken', 'media_file__file_location').all()]
+                self.mediafiletag_set.order_by('media_file__date_taken', 'media_file__file_location').all()]
 
 
 class MediaFileComment(models.Model):
