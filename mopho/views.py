@@ -70,7 +70,7 @@ def download_photos(request, tag_name=None, album_name=None):
         raise ValueError("Need album name or tag name")
 
     zip_file = tempfile.TemporaryFile('w+b')
-    z = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_STORED)
+    z = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_STORED, allowZip64=True)
     out_filename = '%s-%s.zip' % (zipfile_label, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
     for pic in pics:
         photo_abspath = os.path.join(settings.PHOTOS_BASEDIR, pic.get_photo_relpath())
