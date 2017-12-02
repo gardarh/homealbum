@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.db import models
 
 from mopho import img_utils
+import os.path
 
 MEDIATYPE_PHOTO = 'photo'
 MEDIATYPE_VIDEO = 'video'
@@ -10,6 +12,9 @@ MEDIATYPE_CHOICES = (
 )
 
 STARRED_TAGNAME = 'starred'
+RAW_DIRNAME = 'raw'
+RAW_EXTENSION = 'ARW'
+RAW_SETTINGSFILE_EXTENSION = 'xmp'
 
 
 class MediaFile(models.Model):
@@ -51,6 +56,24 @@ class MediaFile(models.Model):
 
     def get_photo_url(self):
         return "/originals/%s" % (self.file_location,)
+
+    def get_raw_url(self):
+        img_path, img_filename = os.path.split(self.get_photo_relpath())
+        expected_raw_filename = '%s.%s' % (os.path.splitext(img_filename)[0], RAW_EXTENSION)
+        rel_raw_path = os.path.join(img_path, RAW_DIRNAME, expected_raw_filename)
+        abs_raw_path = os.path.join(settings.PHOTOS_BASEDIR, rel_raw_path)
+        if os.path.exists(abs_raw_path):
+            return '/originals/%s' % (rel_raw_path,)
+        return None
+
+    def get_raw_settings_url(self):
+        img_path, img_filename = os.path.split(self.get_photo_relpath())
+        expected_raw_filename = '%s.%s' % (os.path.splitext(img_filename)[0], RAW_SETTINGSFILE_EXTENSION)
+        rel_raw_path = os.path.join(img_path, RAW_DIRNAME, expected_raw_filename)
+        abs_raw_path = os.path.join(settings.PHOTOS_BASEDIR, rel_raw_path)
+        if os.path.exists(abs_raw_path):
+            return '/originals/%s' % (rel_raw_path,)
+        return None
 
     def get_photo_relpath(self):
         return self.file_location
@@ -107,6 +130,13 @@ class AlbumItem(models.Model):
 
     def get_photo_url(self):
         return self.media_file.get_photo_url()
+
+    def get_raw_url(self):
+        return self.media_file.get_raw_url()
+
+    def get_raw_settings_url(self):
+        return self.media_file.get_raw_settings_url()
+
 
     def next_item(self):
         if self.media_file.date_taken:
