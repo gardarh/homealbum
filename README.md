@@ -11,8 +11,9 @@ makethumbs/makedb scripts to make photos browsable.
 HomeAlbum is built around the concept of "albums" where each
 album is stored in a dedicated folder.
 
+
 Development setup
------
+-----------------
 Create a virtualenv, upgrade pip and install dependencies:
 ```
 git clone https://github.com/gardarh/homealbum
@@ -47,11 +48,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost']
 ```
 
-Run migrations, collect static assets:
+Run migrations:
 
 ```
 python manage.py migrate
-python manage.py collectstatic
 ```
 
 Copy some albums into the originals folder and run the processing
@@ -77,6 +77,39 @@ Finally run the development server:
 python manage.py runserver
 ```
 
+Production setup
+----------------
+
+Install the program code as described in "Development setup".
+
+Create a systemd job to run the tornado server:
+
+```
+cp support_files/mopho.service /lib/systemd/system/
+sudo systemctl enable mopho.service
+```
+
+Install nginx and add the following to `server` block in
+`/etc/nginx/sites-available/default` (assuming a Debian
+like environment):
+
+```
+   location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        #try_files $uri $uri/ =404;
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+```
+
+Add the following cronjob (`crontab -e`):
+
+```
+10 4 * * * /srv/mopho/env/bin/python3 /srv/mopho/manage.py makethumbs > /dev/null 2>&1 && /srv/mopho/env/bin/python3 /srv/mopho/manage.py makedb > /dev/null 2>&1
+```
 
 Maintenance
 =========

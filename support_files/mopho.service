@@ -1,0 +1,12 @@
+[Unit]
+Description=Mopho photo browsing platform
+After=multi-user.target
+
+[Service]
+Environment=PYTHONPATH=/srv/mopho
+Environment=DJANGO_SETTINGS_MODULE=django_mopho.settings
+WorkingDirectory=/srv/mopho
+ExecStart=/srv/mopho/env/bin/python /srv/mopho/django_mopho/tornado_runner.py --port=8080
+
+[Install]
+WantedBy=multi-user.target
