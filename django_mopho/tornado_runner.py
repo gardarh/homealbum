@@ -1,5 +1,5 @@
 # Run this with
-# PYTHONPATH=. DJANGO_SETTINGS_MODULE=django_mopho.settings python django_mopho/tornado_runner.py --port=1234
+# DJANGO_ALLOW_ASYNC_UNSAFE=true PYTHONPATH=. DJANGO_SETTINGS_MODULE=django_mopho.settings python django_mopho/tornado_runner.py --port=1234
 import tornado.httpserver
 import tornado.web
 import tornado.wsgi
@@ -9,10 +9,6 @@ import tornado.ioloop
 from tornado.options import define, parse_command_line, options
 
 django.setup()
-
-ORIGINALS_PATH = "/Users/gardarh/Desktop/photos/photos"
-THUMBS_PATH = "/Users/gardarh/mopho/thumbs/thumbs"
-STATIC_PATH = "/Users/gardarh/mopho_static"
 
 MULTI_CORE = True
 TORNADO_PORT = 9998

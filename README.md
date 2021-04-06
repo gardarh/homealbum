@@ -82,6 +82,12 @@ Production setup
 
 Install the program code as described in "Development setup".
 
+In addition prepare static files:
+
+```
+python manage.py collectstatic
+```
+
 Create a systemd job to run the tornado server:
 
 ```
