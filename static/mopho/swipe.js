@@ -1,4 +1,4 @@
-const SWIPE_LENGTH_THRESHOLD = 100
+const SWIPE_LENGTH_THRESHOLD = 50
 const SWIPE_MAX_TIME_LENGTH_MS = 400
 export class Swipe {
     onLeft;
