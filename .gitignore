@@ -19,3 +19,7 @@ tests/report/
 django_mopho/local_settings.py
 db.sqlite3
 .idea/workspace.xml
+
+env/
+content/
+mopho-static/

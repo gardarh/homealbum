@@ -119,8 +119,8 @@ class AlbumItem(models.Model):
     # as file_location of MediaFile it may actually differ, same MediaFile may be used to
     # represent multiple files in multiple locations (provided that the files are identical)
     file_location = models.CharField(max_length=1024, null=False, unique=True, db_index=True)
-    album = models.ForeignKey(Album)
-    media_file = models.ForeignKey(MediaFile, on_delete=models.DO_NOTHING)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    media_file = models.ForeignKey(MediaFile, on_delete=models.CASCADE)
 
     def __repr__(self):
         return "AlbumItem(%d)" % (self.id,)
@@ -136,7 +136,6 @@ class AlbumItem(models.Model):
 
     def get_raw_settings_url(self):
         return self.media_file.get_raw_settings_url()
-
 
     def next_item(self):
         if self.media_file.date_taken:
@@ -239,7 +238,7 @@ class Tag(models.Model):
 
 
 class MediaFileComment(models.Model):
-    media_file = models.ForeignKey(MediaFile, on_delete=models.DO_NOTHING)
+    media_file = models.ForeignKey(MediaFile, on_delete=models.CASCADE)
     comment = models.TextField(default='')
 
     def __str__(self):
@@ -247,7 +246,7 @@ class MediaFileComment(models.Model):
 
 
 class MediaFileTag(models.Model):
-    media_file = models.ForeignKey(MediaFile, on_delete=models.DO_NOTHING)
+    media_file = models.ForeignKey(MediaFile, on_delete=models.CASCADE)
     # NOTE: Starred pictures will use the "starred" tag
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 

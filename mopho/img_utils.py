@@ -319,10 +319,10 @@ def extract_exif_data(photo_src_path):
             for k, v in exif_raw.items()
             if k in ExifTags.TAGS
             }
-        if 'FNumber' in exif and len(exif['FNumber']) == 2:
-            img_data['f_number'] = "%.1f" % (float(exif['FNumber'][0]) / float(exif['FNumber'][1]),)
-        if 'ExposureTime' in exif and len(exif['ExposureTime']) == 2:
-            exposure_time = float(exif['ExposureTime'][0]) / float(exif['ExposureTime'][1])
+        if 'FNumber' in exif:
+            img_data['f_number'] = "%.1f" % (float(exif['FNumber'].numerator) / float(exif['FNumber'].numerator),)
+        if 'ExposureTime':
+            exposure_time = float(exif['ExposureTime'].numerator) / float(exif['ExposureTime'].denominator)
             if exposure_time < 1 and exposure_time != 0:
                 img_data['exposure_time'] = "1/%d" % (round(1 / exposure_time, 0))
             else:
