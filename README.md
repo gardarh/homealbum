@@ -27,18 +27,17 @@ pip install -r requirements.txt
 Create the required folders:
 
 ```
-mkdir content
-mkdir content/originals
-mkdir content/thumbs
+mkdir generated
+mkdir generated/thumbs
 ```
 
-Create `django_mopho/local_settings.py` with the following contents:
+Create `django_homealbum/homealbum/development_settings.py` with the following contents:
 
 ```
-BASEDIR = '/User/myuser/mopho-folder'
-PHOTOS_BASEDIR = f'{BASEDIR}/content/pics'
-PHOTOS_THUMBS_BASEDIR = f'{BASEDIR}/content/thumbs'
-STATIC_ROOT = f'{BASEDIR}/mopho-static'
+GENERATED_DIR = '/User/myuser/homealbum/generated'
+PHOTOS_BASEDIR = f'/media/albums'
+PHOTOS_THUMBS_BASEDIR = f'{GENERATED_DIR}/thumbs'
+STATIC_ROOT = f'{GENERATED_DIR}/static-files'
 # Generate secret key with:
 # import secrets, string
 # alphabet = (string.ascii_letters + string.digits + string.punctuation).replace("'", '').replace('"', '')
@@ -54,18 +53,33 @@ Run migrations:
 python manage.py migrate
 ```
 
-Copy some albums into the originals folder and run the processing
-script:
+Make sure your `PHOTOS_BASEDIR` contains at least one album. An expected folder structure
+is as follows:
 
 ```
-cp -rp ~/photos/2020-summer-vacation content/originals/
+albums/
+└── 2021-01-15-winter-walk
+    ├── DSC09886.JPG
+    ├── DSC09887.JPG
+    └── raw
+        ├── DSC09886.ARW
+        └── DSC09887.ARW
+```
+
+With the above structure and `PHOTOS_BASEDIR` configured accordingly in `development_settings.py`
+you should now run the following:
+
+```
+export DJANGO_SETTINGS_MODULE=homealbum.development_settings
+cd django_homealbum/
 python manage.py makethumbs && python manage.py makedb
 ```
 
-Your database should now be populated and the `content/thumbs`
-folder should contain thumbnails.
+The `makethumbs` generates thumbnails. A thumbnail name is a hash based on a photo contents
+and `makethumbs` does not touch the database. `makedb` updates the database with any new photos.
+Both scripts should be run after new photos have been added to the `albums` folder.
 
-Create a superuser:
+Next, create the first superuser:
 
 ```
 python manage.py createsuperuser
@@ -82,17 +96,22 @@ Production setup
 
 Install the program code as described in "Development setup".
 
-In addition prepare static files:
+Create `django_homealbum/homealbum/production_settings.py` with the similar contents as descriped with
+`development_settings.py` above.
+
+In addition, createa  folder for static files and run `collectstatic`:
 
 ```
+mkdir generated/static-files
+cd django_homealbum
 python manage.py collectstatic
 ```
 
 Create a systemd job to run the tornado server:
 
 ```
-cp support_files/mopho.service /lib/systemd/system/
-sudo systemctl enable mopho.service
+cp support_files/homealbum.service /lib/systemd/system/
+sudo systemctl enable homealbum.service
 ```
 
 Install nginx and add the following to `server` block in
@@ -114,8 +133,10 @@ like environment):
 Add the following cronjob (`crontab -e`):
 
 ```
-10 4 * * * /srv/mopho/env/bin/python3 /srv/mopho/manage.py makethumbs > /dev/null 2>&1 && /srv/mopho/env/bin/python3 /srv/mopho/manage.py makedb > /dev/null 2>&1
+10 4 * * * /srv/homealbum/env/bin/python3 /srv/homealbum/manage.py makethumbs > /dev/null 2>&1 && /srv/homealbum/env/bin/python3 /srv/homealbum/manage.py makedb > /dev/null 2>&1
 ```
+
+This cronjob will detect any changes to your `albums/` folder and generate thumbs/update database accordingly.
 
 Maintenance
 =========
@@ -123,7 +144,7 @@ Maintenance
 Move tags around:
 ---------
 ```
-from mopho.models import Album, Tag, MediaFileTag
+from homealbum.models import Album, Tag, MediaFileTag
 t = Tag.objects.get(name='starred')
 tnew = Tag('starred-2016-2017')
 tnew.save()

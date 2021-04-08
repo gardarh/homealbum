@@ -1,0 +1,11 @@
+{% extends "frame.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'core/style.css' %}" />
+<script src="{% static 'core/jquery-3.0.0.min.js' %}"></script>
+{% endblock %}
+{% block body %}
+    <div id="content">
+    {% block content %}{% endblock %}
+    </div>
+{% endblock %}

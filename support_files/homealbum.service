@@ -1,0 +1,13 @@
+[Unit]
+Description=HomeAlbum photo browsing platform
+After=multi-user.target
+
+[Service]
+Environment=PYTHONPATH=/srv/homealbum
+Environment=DJANGO_SETTINGS_MODULE=homealbum.settings
+Environment=DJANGO_ALLOW_ASYNC_UNSAFE=true
+WorkingDirectory=/srv/homealbum
+ExecStart=/srv/homealbum/env/bin/python /srv/homealbum/homealbum/tornado_runner.py --port=8080
+
+[Install]
+WantedBy=multi-user.target
