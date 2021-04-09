@@ -32,6 +32,10 @@ class MediaFile(models.Model):
     def __str__(self):
         return "%s" % (self.file_location,)
 
+    def exif_data(self):
+        photo_src_path = os.path.join(settings.PHOTOS_BASEDIR, self.get_photo_relpath())
+        return img_utils.extract_exif_data(photo_src_path)
+
     def get_thumb_url(self, thumb_width=img_utils.LISTTHUMB_SIZE[0]):
         return "/thumbs/%s" % (img_utils.get_thumb_rel_url(self.file_hash, thumb_width),)
 

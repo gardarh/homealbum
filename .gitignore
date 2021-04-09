@@ -9,6 +9,7 @@ docs/_build/
 docs/locale/
 node_modules/
 build/
+.DS_Store
 
 # django specific ignores.
 django_homealbum/core/tests/coverage_html/
