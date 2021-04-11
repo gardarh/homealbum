@@ -1,7 +1,9 @@
+from django.urls import path, include
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 
 from core.api_views import AlbumsViewSet, AlbumItemsViewSet, TagsViewSet, MediaFilesViewSet, MediaFileCommentsViewSet, \
-    MediaFileTagsViewSet
+    MediaFileTagsViewSet, SystemInfo
 
 router = routers.DefaultRouter()
 router.register('albums', AlbumsViewSet, basename='albums')
@@ -14,5 +16,9 @@ router.register('mediafiles/(?P<mediafile_hash>[a-z0-9]+)/comments', MediaFileCo
 router.register('mediafiles/(?P<mediafile_hash>[a-z0-9]+)/tags', MediaFileTagsViewSet,
                 basename='mediafile-tags')
 
-urlpatterns = []
+urlpatterns_unformatted = [
+    path('system-info/', SystemInfo.as_view(), name='system-info'),
+    path('auth/', include('rest_auth.urls')),
+]
+urlpatterns = format_suffix_patterns(urlpatterns_unformatted)
 urlpatterns += router.urls

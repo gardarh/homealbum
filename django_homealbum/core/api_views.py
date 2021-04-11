@@ -1,8 +1,22 @@
+from django.conf import settings
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from core.api_serializers import AlbumListSerializer, AlbumSerializer, AlbumItemSerializer, TagSerializer, TagListSerializer, \
+from core.api_serializers import AlbumListSerializer, AlbumSerializer, AlbumItemSerializer, TagSerializer, \
+    TagListSerializer, \
     MediaFileSerializer, MediaFileListSerializer, MediaFileCommentSerializer, MediaFileTagShallowSerializer
 from core.models import Album, Tag, MediaFile
+
+
+class SystemInfo(APIView):
+    # noinspection PyMethodMayBeStatic
+    def get(self, request, **_):
+        return Response({
+            "build_no": settings.HOMEALBUM_BUILDNO,
+            "version": settings.HOMEALBUM_VERSION,
+            "is_authenticated": request.user and request.user.is_authenticated,
+        })
 
 
 class AlbumItemsViewSet(viewsets.ModelViewSet):
@@ -57,4 +71,3 @@ class MediaFileTagsViewSet(viewsets.ModelViewSet):
         mediafile_hash = self.kwargs.get('mediafile_hash', None)
         media_file = MediaFile.objects.get(file_hash=mediafile_hash)
         return media_file.mediafiletag_set.all().order_by('id')
-

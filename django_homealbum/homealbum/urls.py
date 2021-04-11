@@ -8,7 +8,6 @@ from core import views
 
 urlpatterns = [
     path('api/v1/', include('homealbum.api_urls')),
-    url('api-auth/', include('rest_framework.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
     url(r'^albums/(?P<album_name>[\w\d \-_]+)/$', views.catalog_by_album, name='albums'),

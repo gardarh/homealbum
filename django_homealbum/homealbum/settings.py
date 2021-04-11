@@ -7,6 +7,10 @@ should be augmented.
 
 import os
 
+HOMEALBUM_VERSION = '0.9.0'
+HOMEALBUM_BUILDNO = int(open('HOMEALBUM_BUILDNO', 'r').read()) if os.path.isfile('HOMEALBUM_BUILDNO') else 0
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -35,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
 ]
 
 MIDDLEWARE = [
