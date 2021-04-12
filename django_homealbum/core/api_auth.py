@@ -24,6 +24,11 @@ class IsAuthenticatedObjectOwner(permissions.BasePermission):
 
     def has_permission(self, request, view):
         from core import api_views
+        # Following views are allowed even for unauthenticated users.
+        if isinstance(view, (
+            api_views.SystemInfo
+        )):
+            return True
 
         if not request.user or not request.user.is_authenticated:
             return False
@@ -35,7 +40,6 @@ class IsAuthenticatedObjectOwner(permissions.BasePermission):
                 api_views.MediaFilesViewSet,
                 api_views.MediaFileCommentsViewSet,
                 api_views.MediaFileTagsViewSet,
-                api_views.SystemInfo,
         )):
             return True
         return False
