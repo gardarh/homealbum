@@ -1,10 +1,11 @@
 const BASE_URL = '/api/v1'
 const API_RESOURCE_USER = `auth/user/`
+const API_RESOURCE_LOGIN = `auth/login/`
 
-type HttpMethod = 'post'|'put'|'get'|'patch'|'delete'
+type HttpMethod = 'POST'|'PUT'|'GET'|'PATCH'|'DELETE'
 function apiFetch<T>(
     apiResource: string,
-    method: HttpMethod = 'get',
+    method: HttpMethod = 'GET',
     payload?: Partial<T>
 ): Promise<T> {
     const init: RequestInit = {
@@ -12,6 +13,9 @@ function apiFetch<T>(
     }
     if(payload !== undefined) {
         init.body = JSON.stringify(payload)
+        init.headers = {
+            'Content-Type': 'application/json'
+        }
     }
     return fetch(`${BASE_URL}/${apiResource}`, init).then(response => {
         return response.json() as Promise<T>
@@ -24,4 +28,14 @@ export const systemInfoGet = function(): Promise<SystemInfo> {
 
 export const userGet = function(): Promise<User> {
     return apiFetch<User>(API_RESOURCE_USER)
+}
+
+export const loginPost = function(parms: LoginForm): Promise<void> {
+    return fetch(`${BASE_URL}/${API_RESOURCE_LOGIN}`, {
+        method: 'POST',
+        body: JSON.stringify(parms),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }).then(() => void(0))
 }

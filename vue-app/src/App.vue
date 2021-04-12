@@ -1,13 +1,12 @@
 <template>
   <div>
     <div v-if="!state.systemInfo?.is_authenticated">
-      Needs authentication
+      <Login />
     </div>
     <div v-else>
       Authenticated
+      <router-view class="mb-3"></router-view>
     </div>
-    {{ state }}
-    <router-view class="mb-3"></router-view>
     <div v-if="state.systemInfo" class="version-info">
       Version: {{ state.systemInfo.version }}
     </div>
@@ -18,10 +17,12 @@
 import { defineComponent } from 'vue'
 import { useState } from './store'
 import { systemInfoGet, userGet } from './utils/api'
+import Login from '/src/pages/Login.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
+    Login,
   },
   setup() {
     const state = useState()

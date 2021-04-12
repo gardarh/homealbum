@@ -11,3 +11,8 @@ interface SystemInfo {
     version: string
     is_authenticated: boolean
 }
+
+interface LoginForm {
+    username: string
+    password: string
+}
