@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,6 +13,7 @@ from core.models import Album, Tag, MediaFile
 
 class SystemInfo(APIView):
     # noinspection PyMethodMayBeStatic
+    @method_decorator(ensure_csrf_cookie)
     def get(self, request, **_):
         return Response({
             "build_no": settings.HOMEALBUM_BUILDNO,
