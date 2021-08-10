@@ -25,3 +25,4 @@ generated/
 # Optionally store photos in albums/ . This is intended for development purposes,
 # generally this project should not be considered "the owner" of the albums.
 albums/
+.env.local

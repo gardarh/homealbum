@@ -14,19 +14,8 @@ HOMEALBUM_BUILDNO = int(open('HOMEALBUM_BUILDNO', 'r').read()) if os.path.isfile
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# Put this in local_settings.py
-# Generate key with
-# SECRET_KEY = ''.join([random.SystemRandom().choice((string.ascii_letters + string.digits + string.punctuation).replace("'",'')) for i in range(50)])
-SECRET_KEY = ''
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = []
+DEBUG = os.getenv('HOMEALBUM_DEBUG', 'n').lower() == 'y'
 
 # Application definition
 
@@ -134,3 +123,14 @@ STATICFILES_DIRS = [
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# Generate key with
+# import string, random
+# SECRET_KEY = ''.join([random.SystemRandom().choice((string.ascii_letters + string.digits + string.punctuation).replace("'",'')) for i in range(50)])
+SECRET_KEY = os.getenv('HOMEALBUM_SECRET_KEY')
+PHOTOS_BASEDIR = os.getenv('HOMEALBUM_PHOTOS_BASEDIR')
+PHOTOS_THUMBS_BASEDIR = os.getenv('HOMEALBUM_THUMBS_BASEDIR')
+STATIC_ROOT = os.getenv('HOMEALBUM_STATIC_FILES_DIR')
+print(f'STATIC_ROOT: {STATIC_ROOT}')
+ALLOWED_HOSTS = os.getenv('HOMEALBUM_ALLOWED_HOSTS', '').split(',')

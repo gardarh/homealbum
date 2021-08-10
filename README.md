@@ -43,23 +43,11 @@ mkdir generated
 mkdir generated/thumbs
 ```
 
-Create `django_homealbum/homealbum/development_settings.py` with the following
-contents:
+Copy `.env.example` to `.env.local` under the root of this project and
+customize variable values. You can source `.env.local` (i.e.
+`source .env.local`) to inject the required environment variables
+into your shell. Remember to generate the SECRET_KEY for production setups.
 
-```
-GENERATED_DIR = '/User/myuser/homealbum/generated'
-# See Introduction section for expected structure of PHOTOS_BASEDIR folder.
-PHOTOS_BASEDIR = f'/path/to/albums'
-PHOTOS_THUMBS_BASEDIR = f'{GENERATED_DIR}/thumbs'
-STATIC_ROOT = f'{GENERATED_DIR}/static-files'
-# Generate secret key with:
-# import secrets, string
-# alphabet = (string.ascii_letters + string.digits + string.punctuation).replace("'", '').replace('"', '')
-# print(''.join([secrets.SystemRandom().choice(alphabet) for _ in range(50)]))
-SECRET_KEY = '' # See instructions above on how to generate secret key.
-DEBUG = True
-ALLOWED_HOSTS = ['localhost']
-```
 
 Run migrations:
 
@@ -67,14 +55,14 @@ Run migrations:
 python manage.py migrate
 ```
 
-Make sure your `PHOTOS_BASEDIR` contains at least one album. An expected folder
+Make sure your `HOMEALBUM_PHOTOS_BASEDIR` contains at least one album. An expected folder
 structure is described in the Introduction section.
 
-With the above structure and `PHOTOS_BASEDIR` configured accordingly in
-`development_settings.py` you should now run the following:
+With the above structure and `HOMEALBUM_PHOTOS_BASEDIR` configured accordingly you should
+now run the following:
 
 ```
-export DJANGO_SETTINGS_MODULE=homealbum.development_settings
+source .env.local
 cd django_homealbum/
 python manage.py makethumbs && python manage.py makedb
 ```
@@ -101,13 +89,10 @@ Production setup
 
 Follow the steps described in "Development setup".
 
-Create `django_homealbum/homealbum/production_settings.py` with the same
-contents as descriped with `development_settings.py` above, modify as needed.
-
 In addition, create a folder for static files and run `collectstatic`:
 
 ```
-mkdir generated/static-files
+mkdir generated/staticfiles
 cd django_homealbum
 python manage.py collectstatic
 ```

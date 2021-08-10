@@ -1,5 +1,5 @@
 # Run this with
-# DJANGO_ALLOW_ASYNC_UNSAFE=true PYTHONPATH=. DJANGO_SETTINGS_MODULE=homealbum.production_settings python homealbum/tornado_runner.py --port=1234
+# DJANGO_ALLOW_ASYNC_UNSAFE=true PYTHONPATH=. [copy all env variables from .env.local into this line] python homealbum/tornado_runner.py --port=1234
 import tornado.httpserver
 import tornado.web
 import tornado.wsgi
