@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     proxy: {
-      '^/(api|static)': {
+      '^/(api|static|thumbs|originals)': {
         target: 'http://localhost:8989',
         changeOrigin: true,
         headers: {

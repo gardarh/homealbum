@@ -1,14 +1,20 @@
 <template>
-    <div>
-      <div class="row">
-        <div class="col-12">
+    <div class="container login-container mb-3">
+      <div class="row mb-1">
+        <div class="col-4">
+          Username:
+        </div>
+        <div class="col-8">
           <input
             v-model="username"
           />
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
+      <div class="row mb-1">
+        <div class="col-4">
+          Password:
+        </div>
+        <div class="col-8">
           <input
             v-model="password"
             type="password"
@@ -53,3 +59,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.login-container {
+  width: 300px;
+}
+</style>

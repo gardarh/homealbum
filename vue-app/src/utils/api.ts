@@ -39,3 +39,15 @@ export const loginPost = function(parms: LoginForm): Promise<void> {
         },
     }).then(() => void(0))
 }
+
+export const albumsListFetch = function(): Promise<AlbumSimple[]> {
+    return apiFetch<AlbumSimple[]>('albums/')
+}
+
+export const albumFetch = function(albumId: number): Promise<Album> {
+    return apiFetch<Album>(`albums/${albumId}/`)
+}
+
+export const albumItemFetch = function(albumId: number, albumItemId: number): Promise<AlbumItem> {
+    return apiFetch<AlbumItem>(`albums/${albumId}/album-items/${albumItemId}/`)
+}

@@ -14,12 +14,11 @@ class AlbumListSerializer(serializers.ModelSerializer):
         ]
 
 
-class MediaFileTagShallowSerializer(serializers.ModelSerializer):
+class TagListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MediaFileTag
+        model = Tag
         fields = [
-            'tag',
-            'media_file'
+            'name',
         ]
 
 
@@ -27,14 +26,15 @@ class MediaFileCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = MediaFileComment
         fields = [
+            'id',
             'media_file',
             'comment',
         ]
 
 
 class MediaFileSerializer(serializers.ModelSerializer):
-    tags = MediaFileTagShallowSerializer(many=True, read_only=True, source='mediafiletag_set')
-    comments = MediaFileCommentSerializer(many=True, read_only=True, source='mediafilecomment_set')
+    tags = TagListSerializer(many=True, read_only=True)
+    comments = MediaFileCommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = MediaFile
@@ -64,19 +64,13 @@ class MediaFileListSerializer(serializers.ModelSerializer):
         ]
 
 
-class MediaFileTagSerializer(serializers.ModelSerializer):
-    media_file = MediaFileSerializer()
-
-    class Meta:
-        model = MediaFileTag
-        fields = [
-            'media_file',
-            'tag'
-        ]
-
-
 class AlbumItemSerializer(serializers.ModelSerializer):
     media_file_item = MediaFileSerializer(source='media_file')
+    raw_url = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_raw_url(instance: AlbumItem):
+        return instance.get_raw_url()
 
     class Meta:
         model = AlbumItem
@@ -84,6 +78,8 @@ class AlbumItemSerializer(serializers.ModelSerializer):
             'id',
             'album',
             'file_location',
+            'raw_url',
+            'media_file',
             'media_file_item',
         ]
 
@@ -99,11 +95,14 @@ class AlbumItemListSerializer(serializers.ModelSerializer):
         ]
 
 
-class TagListSerializer(serializers.ModelSerializer):
+class MediaFileTagSerializer(serializers.ModelSerializer):
+    media_file = MediaFileSerializer()
+
     class Meta:
-        model = Tag
+        model = MediaFileTag
         fields = [
-            'name',
+            'media_file',
+            'tag'
         ]
 
 

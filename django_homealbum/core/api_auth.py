@@ -38,8 +38,6 @@ class IsAuthenticatedObjectOwner(permissions.BasePermission):
                 api_views.AlbumsViewSet,
                 api_views.TagsViewSet,
                 api_views.MediaFilesViewSet,
-                api_views.MediaFileCommentsViewSet,
-                api_views.MediaFileTagsViewSet,
         )):
             return True
         return False

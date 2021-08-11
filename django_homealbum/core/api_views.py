@@ -5,9 +5,13 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.api_serializers import AlbumListSerializer, AlbumSerializer, AlbumItemSerializer, TagSerializer, \
+from core.api_serializers import AlbumListSerializer,\
+    AlbumSerializer,\
+    AlbumItemSerializer,\
+    TagSerializer, \
     TagListSerializer, \
-    MediaFileSerializer, MediaFileListSerializer, MediaFileCommentSerializer, MediaFileTagShallowSerializer
+    MediaFileSerializer,\
+    MediaFileListSerializer
 from core.models import Album, Tag, MediaFile
 
 
@@ -56,21 +60,3 @@ class MediaFilesViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return MediaFileListSerializer
         return MediaFileSerializer
-
-
-class MediaFileCommentsViewSet(viewsets.ModelViewSet):
-    serializer_class = MediaFileCommentSerializer
-
-    def get_queryset(self):
-        mediafile_hash = self.kwargs.get('mediafile_hash', None)
-        media_file = MediaFile.objects.get(file_hash=mediafile_hash)
-        return media_file.mediafilecomment_set.all().order_by('id')
-
-
-class MediaFileTagsViewSet(viewsets.ModelViewSet):
-    serializer_class = MediaFileTagShallowSerializer
-
-    def get_queryset(self):
-        mediafile_hash = self.kwargs.get('mediafile_hash', None)
-        media_file = MediaFile.objects.get(file_hash=mediafile_hash)
-        return media_file.mediafiletag_set.all().order_by('id')

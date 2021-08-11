@@ -28,6 +28,7 @@ class MediaFile(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     date_taken = models.DateTimeField(null=True)
+    tags = models.ManyToManyField('Tag', through='MediaFileTag')
 
     def __str__(self):
         return "%s" % (self.file_location,)
@@ -88,10 +89,10 @@ class MediaFile(models.Model):
         for ai in self.albumitem_set.all():
             ai.media_file = other
             ai.save()
-        for mfc in self.mediafilecomment_set.all():
+        for mfc in self.comments.all():
             mfc.media_file = other
             mfc.save()
-        for mft in self.mediafiletag_set.all():
+        for mft in self.tags.all():
             mft.media_file = other
             mft.save()
 
@@ -99,7 +100,7 @@ class MediaFile(models.Model):
 class Album(models.Model):
     name = models.CharField(max_length=1024, null=False, unique=True, db_index=True)
     earliest_date = models.DateTimeField(null=True)
-    latest_date = models.DateTimeField(null=True)
+    latest_date = models.DateTimeField(null=True, db_index=True)
 
     def gen_album_dates(self):
         first_pic_list = self.albumitem_set.order_by('media_file__date_taken')[0:1]
@@ -115,6 +116,9 @@ class Album(models.Model):
 
     def __str__(self):
         return "Album: %s (id: %d)" % (self.name, self.id)
+
+    class Meta:
+        ordering = ['-latest_date', '-id']
 
 
 class AlbumItem(models.Model):
@@ -177,6 +181,9 @@ class AlbumItem(models.Model):
                                                                                       '-file_location')[0:1]
 
         return prev_pic_list[0] if len(prev_pic_list) > 0 else None
+
+    class Meta:
+        ordering = ['-id']
 
 
 class Tag(models.Model):
@@ -242,7 +249,7 @@ class Tag(models.Model):
 
 
 class MediaFileComment(models.Model):
-    media_file = models.ForeignKey(MediaFile, on_delete=models.CASCADE)
+    media_file = models.ForeignKey(MediaFile, on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField(default='')
 
     def __str__(self):

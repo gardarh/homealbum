@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noImplicitAny": false,
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
@@ -13,7 +14,7 @@
     "plugins": [{"name":"@vuedx/typescript-plugin-vue"}],
     "paths": {
       "/src/*": [
-        "src/*"
+        "./src/*"
       ]
     },
 

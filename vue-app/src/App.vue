@@ -1,11 +1,18 @@
 <template>
   <div>
-    <div v-if="!state.systemInfo?.is_authenticated">
+    <LoadingAnimation v-if="!state.systemInfo" />
+    <div v-else-if="!state.systemInfo?.is_authenticated">
       <Login />
     </div>
-    <div v-else>
-      Authenticated
-      <router-view class="mb-3"></router-view>
+    <div v-else class="mb-3">
+      <router-view v-slot="{ Component, route }">
+        <keep-alive include="album">
+          <component
+            :is="Component"
+            :key="route.meta.cacheKey ? route.params[route.meta.cacheKey] : undefined"
+          />
+        </keep-alive>
+      </router-view>
     </div>
     <div v-if="state.systemInfo" class="version-info">
       Version: {{ state.systemInfo.version }}
@@ -17,12 +24,14 @@
 import { defineComponent } from 'vue'
 import { useState } from './store'
 import { systemInfoGet, userGet } from './utils/api'
+import Album from '/src/pages/Album.vue'
 import Login from '/src/pages/Login.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     Login,
+    Album,
   },
   setup() {
     const state = useState()
@@ -48,7 +57,7 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 .version-info {
