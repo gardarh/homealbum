@@ -10,7 +10,7 @@
           >Prev</Button>
         </div>
         <div class="col-4 d-flex justify-content-center">
-          <Button @click="exitItemView" button-style="outline">Exit</Button>
+          <Button @click="exitItemView" button-style="outline">Back to album</Button>
         </div>
         <div class="col-4 d-flex justify-content-end">
           <Button

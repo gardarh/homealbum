@@ -60,6 +60,10 @@ export default defineComponent({
   margin-top: 20px;
 }
 
+html {
+  scroll-behavior: auto !important;
+}
+
 .version-info {
   color: #AAA;
   font-size: 11px;

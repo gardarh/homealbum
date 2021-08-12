@@ -25,8 +25,8 @@
         @exit-item-view="exitItemView"
       />
     </div>
-    <ul v-else class="thumb-grid list-unstyled">
-      <li v-for="item in album.album_items" :key="item.id">
+    <ul v-show="albumItemId === null" class="thumb-grid list-unstyled">
+      <li v-for="item in album.album_items" :key="item.id" :ref="setThumbRef">
         <Button
           button-style="link"
           @click="(evt) => albumItemClicked(evt, item)"
@@ -57,6 +57,8 @@ export default defineComponent({
       album: null as Album|null,
       albumItem: null as AlbumItem|null,
       albumItemId: null as number|null,
+      thumbRefs: [] as HTMLElement[],
+      pendingScrollIndex: -1,
     }
   },
   created() {
@@ -86,8 +88,7 @@ export default defineComponent({
       if(this.albumItem === null || this.album === null) {
         return -1
       }
-      const curItemId = this.albumItem.id
-      return this.album.album_items.findIndex(albumItem => albumItem.id === curItemId)
+      return this.getAlbumIndexForId(this.albumItem.id)
     },
   },
   watch: {
@@ -111,8 +112,14 @@ export default defineComponent({
         const albumItemId = typeof this.$route.params.albumItemId === 'string' ?
           parseInt(this.$route.params.albumItemId) :
           null
-        this.albumItemId = albumItemId
-        this.loadAlbumItem()
+        if(this.albumItemId !== null && albumItemId === null) {
+          // Coming from "back" navigation. Dispatch exitItemView to scroll
+          // to the item the user was viewing.
+          this.exitItemView()
+        } else {
+          this.albumItemId = albumItemId
+          this.loadAlbumItem()
+        }
       })
     },
     attachSwipe(): void {
@@ -140,6 +147,16 @@ export default defineComponent({
           default: return; // exit this handler for other keys
         }
       };
+    },
+    setThumbRef(el?: HTMLElement) {
+      if (el) {
+        this.thumbRefs.push(el)
+      }
+    },
+    getAlbumIndexForId(itemId: number): number {
+      return this.album !== null ?
+        this.album.album_items.findIndex(albumItem => albumItem.id === itemId) :
+        -1
     },
     goToAlbumItem(albumItemId: number|null): Promise<void> {
       this.albumItemId = albumItemId
@@ -184,8 +201,19 @@ export default defineComponent({
       this.goToAlbumItem(this.album.album_items[this.itemIndex-1].id)
     },
     exitItemView(): void {
+      this.pendingScrollIndex = this.itemIndex
       this.goToAlbumItem(null)
     }
+  },
+  beforeUpdate() {
+    this.thumbRefs = []
+  },
+  updated() {
+    const thumbRef = this.thumbRefs[this.pendingScrollIndex]
+    if(thumbRef) {
+      thumbRef.scrollIntoView()
+    }
+    this.pendingScrollIndex = -1
   }
 })
 </script>
