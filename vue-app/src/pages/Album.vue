@@ -38,6 +38,9 @@
         </Button>
       </li>
     </ul>
+    <div v-if="downloadAsZipUrl !== null && albumItemId === null">
+      <a :href="downloadAsZipUrl">Download album as .zip</a>
+    </div>
   </div>
 </template>
 
@@ -73,6 +76,12 @@ export default defineComponent({
   computed: {
     SMALL_THUMB_SIZE(): number {
       return 250
+    },
+    downloadAsZipUrl(): string|null {
+      if(this.album === null) {
+        return null
+      }
+      return `/api/v1/albums/${this.album.id}/download/`
     },
     albumId(): number {
       const albumId = this.$route.params.albumId

@@ -150,11 +150,11 @@ export default defineComponent({
     allowNextNavigation(): boolean {
       return this.itemIndex < this.album.album_items.length - 1
     },
-    exif(): ExifData {
+    exif(): ExifData|null {
       return this.albumItem.media_file_item.exif_data
     },
     albumItemDateRepr(): string|null {
-      if(this.exif.date === undefined) {
+      if(this.exif === null || this.exif.date === null) {
         return null
       }
       const date = DateTime.fromISO(this.exif.date)

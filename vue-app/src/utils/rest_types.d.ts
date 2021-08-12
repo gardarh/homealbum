@@ -20,8 +20,8 @@ interface LoginForm {
 interface AlbumSimple {
     id: number
     name: string
-    earliest_date: string
-    latest_date: string
+    earliest_date: string|null
+    latest_date: string|null
 }
 
 interface Album extends AlbumSimple {
@@ -44,12 +44,12 @@ interface AlbumItem extends AlbumItemSimple {
 type MediaType = 'photo'|'video'
 
 interface ExifData {
-    f_number?: string // e.g. "1/2"
-    exposure_time?: string // e.g. "1/100"
-    make?: string
-    model?: string
-    iso?: number,
-    date?: string // e.g. "2021-01-10T13:47:24"
+    f_number: string|null // e.g. "1/2"
+    exposure_time: string|null // e.g. "1/100"
+    make: string|null
+    model: string|null
+    iso: number|null,
+    date: string|null // e.g. "2021-01-10T13:47:24"
 }
 
 interface Tag {
@@ -69,7 +69,7 @@ interface MediaFileItem {
     width: number
     height: number
     date_taken: string
-    exif_data: ExifData
+    exif_data: ExifData|null
     tags: Tag[]
     comments: Comment[]
 }

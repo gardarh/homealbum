@@ -12,8 +12,7 @@ from django.shortcuts import render
 
 from core import img_utils, utils
 from core.models import MediaFile, Tag, STARRED_TAGNAME, MediaFileTag, Album, AlbumItem
-
-FILESTREAM_CHUNK_SIZE = 8192
+from core.utils import FILESTREAM_CHUNK_SIZE
 
 
 @login_required

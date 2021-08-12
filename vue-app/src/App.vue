@@ -55,9 +55,10 @@ export default defineComponent({
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 html {
@@ -65,6 +66,7 @@ html {
 }
 
 .version-info {
+  text-align: center;
   color: #AAA;
   font-size: 11px;
 }
