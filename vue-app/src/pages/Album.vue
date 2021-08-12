@@ -25,7 +25,7 @@
         @exit-item-view="exitItemView"
       />
     </div>
-    <ul v-show="albumItemId === null" class="thumb-grid list-unstyled">
+    <ul v-show="albumItemId === null" class="thumb-grid list-unstyled text-center">
       <li v-for="item in album.album_items" :key="item.id" :ref="setThumbRef">
         <Button
           button-style="link"

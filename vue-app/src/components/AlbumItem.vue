@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="mb-1">
-        <div class="px-0">
+        <div class="px-0 text-center">
           <img
             :src="`/thumbs/${mediaFile.substring(0, 2)}/${mediaFile}-${LARGE_THUMB_SIZE}.jpg`"
             class="img-fluid"
