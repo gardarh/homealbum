@@ -89,12 +89,20 @@ Production setup
 
 Follow the steps described in "Development setup".
 
-In addition, create a folder for static files and run `collectstatic`:
+Create a folder for static files and run `collectstatic`:
 
 ```
 mkdir generated/staticfiles
 cd django_homealbum
 python manage.py collectstatic
+```
+
+Build the frontend app:
+
+```
+cd /srv/homealbum/vue-app
+npm install
+npm run build
 ```
 
 Create a systemd job to run the embedded tornado web server:
@@ -109,21 +117,40 @@ Install nginx and add the following to `server` block in
 like environment):
 
 ```
-   location / {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
+    location ~ ^/(api) {
+		proxy_pass http://127.0.0.1:8080;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+	}
+
+    location /static/ {
+      alias /srv/homealbum/generated/staticfiles/;
     }
 
+    location /thumbs/ {
+      alias /data/homealbum-thumbs/;
+    }
+
+    location /originals/ {
+      alias /data/Pictures/;
+    }
+
+    location / {
+        root /srv/homealbum/vue-app/dist;
+        try_files $uri $uri/ /index.html;
+        expires -1;
+        if_modified_since off;
+        add_header Last-Modified $date_gmt;
+    }
 ```
 
 Add the following cronjob (Issue the `crontab -e` shell command):
 
 ```
-10 4 * * * /srv/homealbum/env/bin/python3 /srv/homealbum/manage.py makethumbs > /dev/null 2>&1 && /srv/homealbum/env/bin/python3 /srv/homealbum/manage.py makedb > /dev/null 2>&1
+10 4 * * * /srv/homealbum/make_thumbs_and_db.sh
 ```
 
-This cronjob will detect any changes to your `albums/` folder and generate
+This cronjob will detect any changes to your albums folder and generate
 thumbs/update database accordingly.
 
 Maintenance
