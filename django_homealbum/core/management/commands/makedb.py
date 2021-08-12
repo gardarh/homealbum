@@ -41,6 +41,7 @@ class Command(BaseCommand):
             for photo in img_utils.get_photo_list(settings.PHOTOS_BASEDIR, album_name):
                 photo_relpath = img_utils.get_photo_filesystem_relpath(album_name, photo)
                 photo_abspath = img_utils.get_photo_filesystem_path(settings.PHOTOS_BASEDIR, album_name, photo)
+                photo_f = None
                 try:
                     photo_f = open(photo_abspath, 'rb')
                     hashsum = img_utils.calc_mediafile_hash(photo_f)
@@ -51,9 +52,9 @@ class Command(BaseCommand):
                             mf.file_location = photo_relpath
                             mf.save()
                     except MediaFile.DoesNotExist:
+                        im = None
                         try:
                             im = Image.open(photo_f)
-                            im.close()
                             width, height = im.size
                             img_datetime = None
                             if hasattr(im, '_getexif'):
@@ -100,8 +101,10 @@ class Command(BaseCommand):
                                 mf.save()
                             else:
                                 raise IOError("")
+                        finally:
+                            if im is not None:
+                                im.close()
 
-                    photo_f.close()
                     try:
                         album_item = AlbumItem.objects.get(file_location=photo_relpath)
                         album_item.media_file = mf
@@ -112,6 +115,9 @@ class Command(BaseCommand):
 
                 except IOError:
                     _logger.warning("Could not process file: %s", photo_abspath)
+                finally:
+                    if photo_f is not None:
+                        photo_f.close()
             album.gen_album_dates()
             album.save()
 
