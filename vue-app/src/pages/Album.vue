@@ -60,7 +60,7 @@ export default defineComponent({
       album: null as Album|null,
       albumItem: null as AlbumItem|null,
       albumItemId: null as number|null,
-      thumbRefs: [] as HTMLElement[],
+      thumbRefs: [] as Element[],
       pendingScrollIndex: -1,
     }
   },
@@ -157,9 +157,9 @@ export default defineComponent({
         }
       };
     },
-    setThumbRef(el?: HTMLElement) {
+    setThumbRef(el: any) {
       if (el) {
-        this.thumbRefs.push(el)
+        this.thumbRefs.push(el as Element)
       }
     },
     getAlbumIndexForId(itemId: number): number {

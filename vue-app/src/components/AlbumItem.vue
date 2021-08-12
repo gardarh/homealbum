@@ -35,6 +35,7 @@
       </small>
     </div>
     <Button
+      v-if="exif !== null"
       @click="() => displayExifData = !displayExifData"
       button-style="outline"
       class="mx-2"
@@ -45,7 +46,7 @@
     <a :href="srcUrl" class="mx-2 btn btn-sm btn-outline-dark">Original</a>
     <a v-if="albumItem.raw_url" :href="albumItem.raw_url" class="mx-2 btn btn-sm btn-outline-dark">Raw</a>
     <transition name="fade">
-      <div v-if="displayExifData" class="mx-2">
+      <div v-if="exif !== null && displayExifData" class="mx-2">
         <table class="table">
           <thead>
             <tr>
