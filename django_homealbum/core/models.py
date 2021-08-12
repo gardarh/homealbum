@@ -103,11 +103,15 @@ class Album(models.Model):
     latest_date = models.DateTimeField(null=True, db_index=True)
 
     def gen_album_dates(self):
-        first_pic_list = self.albumitem_set.order_by('media_file__date_taken')[0:1]
+        first_pic_list = self.albumitem_set \
+            .filter(media_file__date_taken__isnull=False) \
+            .order_by('media_file__date_taken')[0:1]
         if len(first_pic_list) > 0:
             self.earliest_date = first_pic_list[0].media_file.date_taken
 
-        last_pic_list = self.albumitem_set.order_by('-media_file__date_taken')[0:1]
+        last_pic_list = self.albumitem_set \
+            .filter(media_file__date_taken__isnull=False) \
+            .order_by('-media_file__date_taken')[0:1]
         if len(last_pic_list) > 0:
             self.latest_date = last_pic_list[0].media_file.date_taken
 
