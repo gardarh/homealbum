@@ -30,14 +30,14 @@ export const userGet = function(): Promise<User> {
     return apiFetch<User>(API_RESOURCE_USER)
 }
 
-export const loginPost = function(parms: LoginForm): Promise<void> {
+export const loginPost = function(parms: LoginForm): Promise<Response> {
     return fetch(`${BASE_URL}/${API_RESOURCE_LOGIN}`, {
         method: 'POST',
         body: JSON.stringify(parms),
         headers: {
             'Content-Type': 'application/json'
         },
-    }).then(() => void(0))
+    })
 }
 
 export const albumsListFetch = function(): Promise<AlbumSimple[]> {
