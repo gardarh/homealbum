@@ -11,6 +11,7 @@
         </div>
         <div class="col-4 d-flex justify-content-center">
           <Button @click="exitItemView" button-style="outline">Back to album</Button>
+          <Button @click.prevent="toggleStarStatus" :button-style="hasStarredTag ? 'default' : 'outline'">Star</Button>
         </div>
         <div class="col-4 d-flex justify-content-end">
           <Button
@@ -96,7 +97,9 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { DateTime } from 'luxon'
+import { albumItemUpdateTags } from '../utils/api'
 const ORIGINALS_URL = '/originals'
+const STARRED_TAG_ID = 'starred'
 export default defineComponent({
   name: 'AlbumItem',
   props: {
@@ -134,10 +137,23 @@ export default defineComponent({
       evt.preventDefault()
       this.$emit('exit-item-view')
     },
+    toggleStarStatus(): void {
+      const oldTags = this.albumItem.media_file_item.tags
+      const newTags = oldTags.map(tag => tag.name).filter(tagName => tagName !== STARRED_TAG_ID)
+      if(!this.hasStarredTag) {
+        newTags.push(STARRED_TAG_ID)
+      }
+      albumItemUpdateTags(this.albumItem.album, this.albumItem.id, newTags).then(newAlbumItem => {
+        this.$emit('album-item-updated', newAlbumItem)
+      })
+    },
   },
   computed: {
     LARGE_THUMB_SIZE(): number {
       return 1200
+    },
+    hasStarredTag(): boolean {
+      return this.albumItem.media_file_item.tags.some((item) => item.name === STARRED_TAG_ID)
     },
     srcUrl(): string {
       return `${ORIGINALS_URL}/${this.albumItem.file_location}`

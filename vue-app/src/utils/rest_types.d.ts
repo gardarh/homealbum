@@ -40,6 +40,10 @@ interface AlbumItem extends AlbumItemSimple {
     raw_url?: string
 }
 
+interface MediaItemTagUpdate {
+    tags: string[]
+}
+
 
 type MediaType = 'photo'|'video'
 

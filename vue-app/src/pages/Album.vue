@@ -23,6 +23,7 @@
         @go-to-prev="goToPrev"
         @go-to-next="goToNext"
         @exit-item-view="exitItemView"
+        @album-item-updated="albumItemUpdated"
       />
     </div>
     <ul v-show="albumItemId === null" class="thumb-grid list-unstyled text-center">
@@ -130,6 +131,9 @@ export default defineComponent({
           this.loadAlbumItem()
         }
       })
+    },
+    albumItemUpdated(newAlbumItem: AlbumItem): void {
+      this.albumItem = newAlbumItem
     },
     attachSwipe(): void {
       const swiper = new Swipe(document.body);
