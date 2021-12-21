@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from core.models import MediaFileComment, MediaFileTag, MediaFile, AlbumItem, Album
+from core.models import MediaFileComment, MediaFileTag, MediaFile, AlbumItem, Album, Tag
 
 
 class IsAuthenticatedObjectOwner(permissions.BasePermission):
@@ -18,6 +18,7 @@ class IsAuthenticatedObjectOwner(permissions.BasePermission):
                 MediaFile,
                 MediaFileTag,
                 MediaFileComment,
+                Tag,
         )):
             return True
         return False
