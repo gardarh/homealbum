@@ -13,7 +13,7 @@ router.register('mediafiles', MediaFilesViewSet, basename='mediafiles')
 
 urlpatterns_unformatted = [
     path('system-info/', SystemInfo.as_view(), name='system-info'),
-    path('auth/', include('rest_auth.urls')),
+    path('auth/', include('dj_rest_auth.urls')),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns_unformatted)
 urlpatterns += router.urls

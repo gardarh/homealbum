@@ -64,15 +64,22 @@ class MediaFile(models.Model):
 
     def get_raw_url(self):
         img_path, img_filename = os.path.split(self.get_photo_relpath())
-        expected_raw_filename = '%s.%s' % (os.path.splitext(img_filename)[0], RAW_EXTENSION)
-        rel_raw_path = os.path.join(img_path, RAW_DIRNAME, expected_raw_filename)
-        abs_raw_path = os.path.join(settings.PHOTOS_BASEDIR, rel_raw_path)
-        if os.path.exists(abs_raw_path):
-            return '/originals/%s' % (rel_raw_path,)
+        original_file_name = os.path.splitext(img_filename)[0]
+        raw_filenames = [
+            '%s.%s' % (original_file_name, RAW_EXTENSION.upper()),
+            '%s.%s' % (original_file_name, RAW_EXTENSION.lower())
+        ]
+        for expected_filename in raw_filenames:
+            rel_raw_path = os.path.join(img_path, RAW_DIRNAME, expected_filename)
+            abs_raw_path = os.path.join(settings.PHOTOS_BASEDIR, rel_raw_path)
+            if os.path.exists(abs_raw_path):
+                return '/originals/%s' % (rel_raw_path,)
         return None
 
     def get_raw_settings_url(self):
         img_path, img_filename = os.path.split(self.get_photo_relpath())
+        original_file_name = os.path.splitext(img_filename)[0]
+
         expected_raw_filename = '%s.%s' % (os.path.splitext(img_filename)[0], RAW_SETTINGSFILE_EXTENSION)
         rel_raw_path = os.path.join(img_path, RAW_DIRNAME, expected_raw_filename)
         abs_raw_path = os.path.join(settings.PHOTOS_BASEDIR, rel_raw_path)
