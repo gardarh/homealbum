@@ -3,11 +3,16 @@ Description=HomeAlbum photo browsing platform
 After=multi-user.target
 
 [Service]
-Environment=PYTHONPATH=/srv/homealbum
+Environment=PYTHONPATH=/srv/homealbum/django_homealbum
 Environment=DJANGO_SETTINGS_MODULE=homealbum.settings
 Environment=DJANGO_ALLOW_ASYNC_UNSAFE=true
-WorkingDirectory=/srv/homealbum
-ExecStart=/srv/homealbum/env/bin/python /srv/homealbum/homealbum/tornado_runner.py --port=8080
+Environment=HOMEALBUM_SECRET_KEY='django-insecure-+c6-t)@lgt1b^b=51r#nxczdht5jx(!@etv$4vmjp-u4$9ys3q'
+Environment=HOMEALBUM_ALLOWED_HOSTS=localhost,my-site.example.com
+Environment=HOMEALBUM_STATIC_FILES_DIR=/srv/homealbum/generated/staticfiles
+Environment=HOMEALBUM_THUMBS_BASEDIR=/srv/homealbum-data/thumbs
+Environment=HOMEALBUM_PHOTOS_BASEDIR=/data/Pictures
+WorkingDirectory=/srv/homealbum/django_homealbum
+ExecStart=/srv/homealbum/env/bin/python /srv/homealbum/django_homealbum/homealbum/tornado_runner.py --port=8080
 
 [Install]
 WantedBy=multi-user.target
